@@ -1,0 +1,7 @@
+{
+    "name": "LionsAd/drupal_ti",
+    "description": "Drupal - Travis Integration",
+    "require": {
+        "php": ">=5.3.0",
+    }
+}
