@@ -43,3 +43,12 @@ By providing different runners in runners/simpletest or runners/phpunit/ the cor
 This gives you a modular travis experience and such the scripts can be very generic.
 
 Drupal is installed in $TRAVIS\_BUILD\_DIR/drupal\_travis/drupal and drush is available after before\_script stage.
+
+### Roadmap
+
+- Support behat running with phantomjs and selenium.
+
+Contributions are welcome.
+
+### Status
+
