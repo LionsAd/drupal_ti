@@ -2,7 +2,7 @@
 
 ### Welcome!
 
-Welcome and thanks for trying drupal_ti!
+Welcome and thanks for trying drupal\_ti!
 
 This will make it simple to use travis to test your drupal modules with simpletest and phpunit tests.
 
@@ -33,3 +33,13 @@ before_install:
 # Comment this line for different directories, e.g. composer in the root.
 #  - cd ./tests
 ````
+
+### How does it work
+
+drupal\_ti provides a drupal-ti command, which is then called with each stage of travis-ci (e.g. install, before_script, ...).
+
+By providing different runners in runners/simpletest or runners/phpunit/ the corresponding scripts are executed (e.g. runners/phpunit/script.sh).
+
+This gives you a modular travis experience and such the scripts can be very generic.
+
+Drupal is installed in $TRAVIS\_BUILD\_DIR/drupal\_travis/drupal and drush is available after before\_script stage.
