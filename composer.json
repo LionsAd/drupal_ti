@@ -2,6 +2,7 @@
   "name": "lionsad/drupal_ti",
   "description": "Drupal - Travis Integration",
   "homepage": "https://github.com/LionsAd/drupal_ti",
+  "license": "GPL-2.0+",
   "minimum-stability": "dev",
   "prefer-stable": true,
   "authors": [
