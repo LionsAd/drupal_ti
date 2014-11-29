@@ -52,3 +52,4 @@ Contributions are welcome.
 
 ### Status
 
+[![Build Status](https://travis-ci.org/LionsAd/drupal_ti.svg?branch=master)](https://travis-ci.org/LionsAd/drupal_ti)
