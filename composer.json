@@ -1,7 +1,16 @@
 {
-    "name": "LionsAd/drupal_ti",
-    "description": "Drupal - Travis Integration",
-    "require": {
-        "php": ">=5.3.0",
-    }
+  "name": "LionsAd/drupal_ti",
+  "description": "Drupal - Travis Integration",
+  "homepage": "https://github.com/LionsAd/drupal_ti",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "authors": [
+    { "name": "Fabian Franz", "email": "fabian@lionsad.de" },
+  ],
+  "bin": [
+    "drupal-ti",
+  ],
+  "require": {
+    "php": ">=5.3.0"
+  }
 }

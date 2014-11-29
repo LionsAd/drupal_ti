@@ -1,0 +1,78 @@
+# @file
+# .travis.yml - Drupal for Travis CI Integration
+#
+# Based for simpletest upon:
+#   https://github.com/sonnym/travis-ci-drupal-module-example
+
+language: php
+
+php:
+  - 5.3
+  - 5.4
+  - 5.5
+  - 5.6
+  - hhvm
+
+matrix:
+  fast_finish: true
+  allow_failures:
+    - php: hhvm
+
+env:
+  global:
+    # add composer's global bin directory to the path
+    # see: https://github.com/drush-ops/drush#install---composer
+    - PATH="$PATH:$HOME/.composer/vendor/bin"
+
+    # Drupal specific vars.
+    - DRUPAL_TI_MODULE_NAME="[[[FILL THIS OUT]]]"
+    - DRUPAL_TI_DB="drupal_travis_db"
+    - DRUPAL_TI_DB_URL="mysql://root:@127.0.0.1/drupal_travis_db"
+    # Note: Do not add a trailing slash here.
+    - DRUPAL_TI_WEBSERVER_URL="http://127.0.0.1"
+    - DRUPAL_TI_WEBSERVER_PORT="8080"
+
+    # Simpletest specific commandline arguments.
+    - DRUPAL_TI_SIMPLETEST_ARGS="--verbose --color --concurrency 4 --url $DRUPAL_TI_WEBSERVER_URL:$DRUPAL_TI_WEBSERVER_PORT $DRUPAL_TI_MODULE_NAME"
+
+    # PHPUnit specific commandline arguments.
+    - DRUPAL_TI_PHPUNIT_ARGS=""
+
+    # Code coverage via coveralls.io
+    - DRUPAL_TI_COVERAGE="satooshi/php-coveralls:0.6.*"
+    # This needs to match your .coveralls.yml file.
+    - DRUPAL_TI_COVERAGE_FILE="build/logs/clover.xml"
+
+    # Debug options
+    #- DRUPAL_TI_DEBUG="-x -v"
+
+  matrix:
+    # [[[ SELECT ANY OR MORE OPTIONS ]]]
+    #- DRUPAL_TI_RUNNERS="phpunit"
+    #- DRUPAL_TI_RUNNERS="simpletest"
+    #- DRUPAL_TI_RUNNERS="phpunit simpletest"
+
+mysql:
+  database: drupal_travis_db
+  username: root
+  encoding: utf8
+
+before_install:
+  - cd ./tests
+  - composer global require LionsAd/drupal_ti:1.*
+  - drupal-ti before_install
+
+install:
+  - drupal-ti install
+
+before_script:
+  - drupal-ti before_script
+
+script:
+  - drupal-ti script
+
+after_script:
+  - drupal-ti after_script
+
+notifications:
+  email: false
