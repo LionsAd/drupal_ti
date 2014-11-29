@@ -1,0 +1,7 @@
+# @file
+# Internal drupal_ti file, use .travis.yml.dist for your drupal projects.
+
+language: bash
+
+script:
+    - ./tests/run-tests.sh
