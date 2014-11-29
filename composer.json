@@ -5,10 +5,10 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "authors": [
-    { "name": "Fabian Franz", "email": "fabian@lionsad.de" },
+    { "name": "Fabian Franz", "email": "fabian@lionsad.de" }
   ],
   "bin": [
-    "drupal-ti",
+    "drupal-ti"
   ],
   "require": {
     "php": ">=5.3.0"
