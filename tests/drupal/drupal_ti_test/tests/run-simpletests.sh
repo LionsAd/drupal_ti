@@ -9,4 +9,4 @@ DIR=$(dirname $0)
 cd $DIR
 
 drush -y en simpletest drupal_ti_test
-drush test-run "drupal_ti_test" "$@"
+drush test-run "DrupalTi Test" "$@"
