@@ -33,7 +33,7 @@ while [ -h "$SELF_PATH" ]; do
 done
 
 # Build the path to our script dir.
-SCRIPT_DIR=$(dirname "$SELF_PATH")
+export DRUPAL_TI_SCRIPT_DIR=$(dirname "$SELF_PATH")
 
 # Use Drupal-7 by default.
 if [ -z "$DRUPAL_TI_ENVIRONMENT" ]
@@ -42,8 +42,7 @@ then
 fi
 
 # Include the environment specific variables.
-export DRUPAL_TI_SCRIPT_DIR="$SCRIPT_DIR"
-export DRUPAL_TI_ENVIRONMENT_INCLUDE="$SCRIPT_DIR/environments/$DRUPAL_TI_ENVIRONMENT.sh"
+export DRUPAL_TI_SCRIPT_DIRS="$DRUPAL_TI_SCRIPT_DIR_BEFORE $DRUPAL_TI_SCRIPT_DIR $DRUPAL_TI_SCRIPT_DIR_AFTER"
 
 # From here on in, we handle failures ourselves.
 set +e
@@ -51,17 +50,20 @@ set +e
 RC=0
 for RUNNER in $DRUPAL_TI_RUNNERS
 do
-	SCRIPT="$SCRIPT_DIR/runners/$RUNNER/$CMD.sh"
-	if [ -x "$SCRIPT" ]
-	then
-		# Loads the environment, then includes the script.
-		"$SCRIPT_DIR/utility/include-script.sh" "$SCRIPT"
-		if [ $? -ne 0  ]
+	for SCRIPT_DIR in $DRUPAL_TI_SCRIPT_DIRS
+	do
+		SCRIPT="$SCRIPT_DIR/runners/$RUNNER/$CMD.sh"
+		if [ -x "$SCRIPT" ]
 		then
-			echo "Error: $SCRIPT exited with a failure." 1>&2
-			RC=1
+			# Loads the environment, then includes the script.
+			"$DRUPAL_TI_SCRIPT_DIR/utility/include-script.sh" "$SCRIPT"
+			if [ $? -ne 0  ]
+			then
+				echo "Error: $SCRIPT exited with a failure." 1>&2
+				RC=1
+			fi
 		fi
-	fi
+	done
 done
 
 # Ensure we don't exit with error status code.
