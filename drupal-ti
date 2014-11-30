@@ -35,6 +35,10 @@ done
 # Build the path to our script dir.
 SCRIPT_DIR=$(dirname "$SELF_PATH")
 
+# From here on in, we handle failures ourselves.
+set +e
+
+RC=0
 for RUNNER in $DRUPAL_TI_RUNNERS
 do
 	SCRIPT="$SCRIPT_DIR/runners/$RUNNER/$CMD.sh"
@@ -44,10 +48,10 @@ do
 		if [ $? -ne 0  ]
 		then
 			echo "Error: $SCRIPT exited with a failure." 1>&2
-			exit 1
+			RC=1
 		fi
 	fi
 done
 
 # Ensure we don't exit with error status code.
-exit 0
+exit $RC
