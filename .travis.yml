@@ -32,6 +32,9 @@ env:
     - DRUPAL_TI_MODULE_NAME="drupal_ti_test"
     - DRUPAL_TI_SIMPLETEST_GROUP="DrupalTi Test"
 
+    # The environment to use, supported are: drupal-7, drupal-8
+    #- DRUPAL_TI_ENVIRONMENT="drupal-7"
+
     # Drupal specific vars.
     - DRUPAL_TI_DB="drupal_travis_db"
     - DRUPAL_TI_DB_URL="mysql://root:@127.0.0.1/drupal_travis_db"
@@ -54,9 +57,8 @@ env:
     #- DRUPAL_TI_DEBUG="-x -v"
 
   matrix:
-#    - DRUPAL_TI_RUNNERS="tests phpunit"
-#    - DRUPAL_TI_RUNNERS="simpletest"
-    - DRUPAL_TI_RUNNERS="test phpunit simpletest"
+    - DRUPAL_TI_RUNNERS="test phpunit simpletest" DRUPAL_TI_ENVIRONMENT="drupal-7"
+    - DRUPAL_TI_RUNNERS="test phpunit simpletest" DRUPAL_TI_ENVIRONMENT="drupal-8"
 
 mysql:
   database: drupal_travis_db

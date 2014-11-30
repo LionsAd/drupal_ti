@@ -12,8 +12,8 @@ then
 fi
 
 
-cd "$TRAVIS_BUILD_DIR/../drupal_travis/drupal/"
-{ php scripts/run-tests.sh --php $(which php) "${ARGS[@]}" || echo "1 fails"; } | tee /tmp/simpletest-result.txt
+cd "$DRUPAL_TI_DRUPAL_DIR"
+{ php "$DRUPAL_TI_SIMPLETEST_FILE" --php $(which php) "${ARGS[@]}" || echo "1 fails"; } | tee /tmp/simpletest-result.txt
 
 egrep -i "([1-9]+ fails)|(PHP Fatal error)|([1-9]+ exceptions)" /tmp/simpletest-result.txt && exit 1
 exit 0

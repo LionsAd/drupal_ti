@@ -35,6 +35,15 @@ done
 # Build the path to our script dir.
 SCRIPT_DIR=$(dirname "$SELF_PATH")
 
+# Use Drupal-7 by default.
+if [ -z "$DRUPAL_TI_ENVIRONMENT" ]
+then
+	DRUPAL_TI_ENVIRONMENT="drupal-7"
+fi
+
+# Include the environment specific variables.
+. "$SCRIPT_DIR/environments/$DRUPAL_TI_ENVIRONMENT.sh"
+
 # From here on in, we handle failures ourselves.
 set +e
 
