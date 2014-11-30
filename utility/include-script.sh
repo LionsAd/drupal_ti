@@ -6,7 +6,7 @@
 for SCRIPT_DIR in $DRUPAL_TI_SCRIPT_DIRS
 do
 	SCRIPT="$SCRIPT_DIR/environments/$DRUPAL_TI_ENVIRONMENT.sh"
-	if [ -x "$SCRIPT" ]
+	if [ -r "$SCRIPT" ]
 	then
 		. "$SCRIPT"
 	fi
