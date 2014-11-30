@@ -69,9 +69,10 @@ before_install:
   #  - composer global require LionsAd/drupal_ti:dev-master
   - mkdir -p "$HOME/.composer/vendor/bin"
   - ln -s $(pwd)/drupal-ti "$HOME/.composer/vendor/bin"
-  - cd ./tests/drupal/drupal_ti_test
+  - cd "./tests/$DRUPAL_TI_ENVIRONMENT/drupal_ti_test"
+  - if [ "$DRUPAL_TI_ENVIRONMENT" = "drupal-8" ]; then DRUPAL_TI_SIMPLETEST_GROUP="drupal_ti_test_group"; fi
   # Save the root dir for the tests runner.
-  - export DRUPAL_TI_TESTS_DIR=$TRAVIS_BUILD_DIR
+  - export DRUPAL_TI_TESTS_DIR="$TRAVIS_BUILD_DIR"
   - export TRAVIS_BUILD_DIR=$(pwd)
 
   # Now we are setup like the things we want to test.
