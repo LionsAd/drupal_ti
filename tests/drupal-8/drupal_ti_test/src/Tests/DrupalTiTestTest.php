@@ -12,6 +12,8 @@ use Drupal\drupal_ti_test\DrupalTiTest;
  * Tests the DrupalTiTest implementation of the drupal_ti_test module.
  *
  * @group drupal_ti_test_group
+ *
+ * @codeCoverageIgnore
  */
 class DrupalTiTestTest extends WebTestBase {
 
