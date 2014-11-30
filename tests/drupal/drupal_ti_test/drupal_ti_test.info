@@ -1,0 +1,9 @@
+name = Drupal Travis Integration - Test module.
+description = This module is for testing drupal_ti.
+package = Novelty
+core = 7.x
+
+dependencies[] = registry_autoload
+
+registry_autoload[] = PSR-0
+registry_autoload[] = PSR-4
