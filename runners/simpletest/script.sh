@@ -15,5 +15,5 @@ fi
 cd "$TRAVIS_BUILD_DIR/../drupal_travis/drupal/"
 { php scripts/run-tests.sh --php $(which php) "${ARGS[@]}" || echo "1 fails"; } | tee /tmp/simpletest-result.txt
 
-egrep -i -q "([0-9]+ fails)|(PHP Fatal error)|([0-9]+ exceptions)" /tmp/simpletest-result.txt && exit 1
+egrep -i "([0-9]+ fails)|(PHP Fatal error)|([0-9]+ exceptions)" /tmp/simpletest-result.txt && exit 1
 exit 0
