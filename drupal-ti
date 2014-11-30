@@ -41,6 +41,11 @@ do
 	if [ -x "$SCRIPT" ]
 	then
 		"$SCRIPT"
+		if [ $? -ne 0  ]
+		then
+			echo "Error: $SCRIPT exited with a failure." 1>&2
+			exit 1
+		fi
 	fi
 done
 
