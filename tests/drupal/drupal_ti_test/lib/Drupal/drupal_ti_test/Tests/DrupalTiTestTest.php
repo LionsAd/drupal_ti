@@ -25,7 +25,7 @@ class DrupalTiTestTest extends \DrupalWebTestCase {
     return array(
       'name' => 'Drupal Travis Integration - Test module',
       'description' => 'Tests the Drupal Travis Integration Test module.',
-      'group' => 'drupal_ti_test',
+      'group' => 'DrupalTi Test',
     );
   }
 

@@ -28,16 +28,19 @@ env:
     # see: https://github.com/drush-ops/drush#install---composer
     - PATH="$PATH:$HOME/.composer/vendor/bin"
 
-    # Drupal specific vars.
+    # Configuration vars.
     - DRUPAL_TI_MODULE_NAME="drupal_ti_test"
+    - DRUPAL_TI_SIMPLETEST_GROUP="DrupalTi Test"
+
+    # Drupal specific vars.
     - DRUPAL_TI_DB="drupal_travis_db"
     - DRUPAL_TI_DB_URL="mysql://root:@127.0.0.1/drupal_travis_db"
     # Note: Do not add a trailing slash here.
     - DRUPAL_TI_WEBSERVER_URL="http://127.0.0.1"
     - DRUPAL_TI_WEBSERVER_PORT="8080"
 
-    # Simpletest specific commandline arguments.
-    - DRUPAL_TI_SIMPLETEST_ARGS="--verbose --color --concurrency 4 --url $DRUPAL_TI_WEBSERVER_URL:$DRUPAL_TI_WEBSERVER_PORT $DRUPAL_TI_MODULE_NAME"
+    # Simpletest specific commandline arguments, the DRUPAL_TI_SIMPLETEST_GROUP is appended at the end.
+    - DRUPAL_TI_SIMPLETEST_ARGS="--verbose --color --concurrency 4 --url $DRUPAL_TI_WEBSERVER_URL:$DRUPAL_TI_WEBSERVER_PORT"
 
     # PHPUnit specific commandline arguments.
     - DRUPAL_TI_PHPUNIT_ARGS=""
@@ -53,7 +56,7 @@ env:
   matrix:
 #    - DRUPAL_TI_RUNNERS="tests phpunit"
 #    - DRUPAL_TI_RUNNERS="simpletest"
-    - DRUPAL_TI_RUNNERS="tests phpunit simpletest"
+    - DRUPAL_TI_RUNNERS="test phpunit simpletest"
 
 mysql:
   database: drupal_travis_db
@@ -65,6 +68,8 @@ before_install:
   - mkdir -p "$HOME/.composer/vendor/bin"
   - ln -s $(pwd)/drupal-ti "$HOME/.composer/vendor/bin"
   - cd ./tests/drupal/drupal_ti_test
+  # Save the root dir for the tests runner.
+  - export DRUPAL_TI_TESTS_DIR=$TRAVIS_BUILD_DIR
   - export TRAVIS_BUILD_DIR=$(pwd)
 
   # Now we are setup like the things we want to test.
