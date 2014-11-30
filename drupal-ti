@@ -55,6 +55,7 @@ do
 		SCRIPT="$SCRIPT_DIR/runners/$RUNNER/$CMD.sh"
 		if [ -x "$SCRIPT" ]
 		then
+			echo "Executing $SCRIPT:"
 			# Loads the environment, then includes the script.
 			"$DRUPAL_TI_SCRIPT_DIR/utility/include-script.sh" "$SCRIPT"
 			if [ $? -ne 0  ]
