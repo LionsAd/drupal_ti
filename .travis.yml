@@ -28,9 +28,9 @@ env:
     # see: https://github.com/drush-ops/drush#install---composer
     - PATH="$PATH:$HOME/.composer/vendor/bin"
 
-     # Configuration vars.
-     - DRUPAL_TI_MODULE_NAME="drupal_ti_test"
-     - DRUPAL_TI_SIMPLETEST_GROUP="DrupalTI Test"
+    # Configuration vars.
+    - DRUPAL_TI_MODULE_NAME="drupal_ti_test"
+    - DRUPAL_TI_SIMPLETEST_GROUP="DrupalTI Test"
 
     # Drupal specific vars.
     - DRUPAL_TI_DB="drupal_travis_db"
