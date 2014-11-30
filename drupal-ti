@@ -42,7 +42,8 @@ then
 fi
 
 # Include the environment specific variables.
-. "$SCRIPT_DIR/environments/$DRUPAL_TI_ENVIRONMENT.sh"
+export DRUPAL_TI_SCRIPT_DIR="$SCRIPT_DIR"
+export DRUPAL_TI_ENVIRONMENT_INCLUDE="$SCRIPT_DIR/environments/$DRUPAL_TI_ENVIRONMENT.sh"
 
 # From here on in, we handle failures ourselves.
 set +e
@@ -53,7 +54,8 @@ do
 	SCRIPT="$SCRIPT_DIR/runners/$RUNNER/$CMD.sh"
 	if [ -x "$SCRIPT" ]
 	then
-		"$SCRIPT"
+		# Loads the environment, then includes the script.
+		"$SCRIPT_DIR/utility/include-script.sh" "$SCRIPT"
 		if [ $? -ne 0  ]
 		then
 			echo "Error: $SCRIPT exited with a failure." 1>&2
