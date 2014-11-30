@@ -28,6 +28,7 @@ class DrupalTiTestTest extends WebTestBase {
   public function testDrupalTiTest() {
     $test = new DrupalTiTest();
     $this->assertEqual('foo', $test->bar(), "Bar function of DrupalTiTest() returns foo.");
+    $this->assertEqual('foo', 'bar', 'This test will fail.');
   }
 }
 
