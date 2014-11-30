@@ -30,7 +30,18 @@ env:
 
     # Configuration vars.
     - DRUPAL_TI_MODULE_NAME="drupal_ti_test"
+
+    # Note: This is customized for drupal-8 environment in
+    #       tests/drupal-8/drupal_ti_test/tests/drupal_ti/before/environments/drupal-8.sh.
     - DRUPAL_TI_SIMPLETEST_GROUP="DrupalTi Test"
+
+    # Define runners and environment vars to include before and after the
+    # main runners / environment vars.
+    - DRUPAL_TI_SCRIPT_DIR_BEFORE="./drupal_ti/before"
+    #- DRUPAL_TI_SCRIPT_DIR_AFTER="./drupal_ti/after"
+
+    # The environment to use, supported are: drupal-7, drupal-8
+    #- DRUPAL_TI_ENVIRONMENT="drupal-7"
 
     # Drupal specific vars.
     - DRUPAL_TI_DB="drupal_travis_db"
@@ -54,9 +65,8 @@ env:
     #- DRUPAL_TI_DEBUG="-x -v"
 
   matrix:
-#    - DRUPAL_TI_RUNNERS="tests phpunit"
-#    - DRUPAL_TI_RUNNERS="simpletest"
-    - DRUPAL_TI_RUNNERS="test phpunit simpletest"
+    - DRUPAL_TI_RUNNERS="test phpunit simpletest" DRUPAL_TI_ENVIRONMENT="drupal-7"
+    - DRUPAL_TI_RUNNERS="test phpunit simpletest" DRUPAL_TI_ENVIRONMENT="drupal-8"
 
 mysql:
   database: drupal_travis_db
@@ -67,9 +77,9 @@ before_install:
   #  - composer global require LionsAd/drupal_ti:dev-master
   - mkdir -p "$HOME/.composer/vendor/bin"
   - ln -s $(pwd)/drupal-ti "$HOME/.composer/vendor/bin"
-  - cd ./tests/drupal/drupal_ti_test
+  - cd "./tests/$DRUPAL_TI_ENVIRONMENT/drupal_ti_test"
   # Save the root dir for the tests runner.
-  - export DRUPAL_TI_TESTS_DIR=$TRAVIS_BUILD_DIR
+  - export DRUPAL_TI_TESTS_DIR="$TRAVIS_BUILD_DIR"
   - export TRAVIS_BUILD_DIR=$(pwd)
 
   # Now we are setup like the things we want to test.

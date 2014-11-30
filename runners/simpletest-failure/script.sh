@@ -6,5 +6,5 @@ cat <<EOF > /tmp/simpletest-result.txt
 EOF
 
 cat /tmp/simpletest-result.txt
-egrep -i "([1-9]+ fails)|(PHP Fatal error)|([1-9]+ exceptions)" /tmp/simpletest-result.txt && exit 1
+egrep -i "([1-9]+ fail)|(PHP Fatal error)|([1-9]+ exception)" /tmp/simpletest-result.txt && exit 1
 exit 0

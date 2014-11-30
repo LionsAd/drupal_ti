@@ -1,0 +1,5 @@
+name: 'Drupal Travis Integration - Test module.'
+type: module
+description: 'This module is for testing drupal_ti.'
+package: Novelty
+core: 8.x

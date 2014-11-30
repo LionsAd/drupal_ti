@@ -21,14 +21,24 @@ fi
 
 # Create database and install Drupal.
 mysql -e "create database $DRUPAL_TI_DB"
-php -d sendmail_path=$(which true) ~/.composer/vendor/bin/drush.php --yes core-quick-drupal --profile=testing --no-server --db-url="$DRUPAL_TI_DB_URL" --enable="simpletest" drupal_travis
-cd drupal_travis/drupal
+
+mkdir -p "$DRUPAL_TI_DRUPAL_BASE"
+cd "$DRUPAL_TI_DRUPAL_BASE"
+
+drupal_ti_install_drupal
+
+cd "$DRUPAL_TI_DRUPAL_DIR"
+
+# Enable simpletest module.
+drush --yes en simpletest
 
 # Point service_container into the drupal installation.
-ln -sf "$MODULE_DIR" "sites/all/modules/$DRUPAL_TI_MODULE_NAME"
+ln -sf "$MODULE_DIR" "$DRUPAL_TI_MODULES_PATH/$DRUPAL_TI_MODULE_NAME"
 
 # Enable it to download dependencies.
 drush --yes en "$DRUPAL_TI_MODULE_NAME"
+
+drupal_ti_clear_caches
 
 # start a web server on port 8080, run in the background; wait for initialization
 drush runserver "$DRUPAL_TI_WEBSERVER_URL:$DRUPAL_TI_WEBSERVER_PORT" &

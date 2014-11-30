@@ -12,4 +12,4 @@ then
 fi
 
 # install drush globally
-composer global require drush/drush:6.*
+composer global require "$DRUPAL_TI_DRUSH_VERSION"

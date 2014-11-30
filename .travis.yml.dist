@@ -30,6 +30,14 @@ env:
     - DRUPAL_TI_MODULE_NAME="[[[FILL THIS OUT]]]"
     - DRUPAL_TI_SIMPLETEST_GROUP="[[[FILL THIS OUT]]]"
 
+    # Define runners and environment vars to include before and after the
+    # main runners / environment vars.
+    #- DRUPAL_TI_SCRIPT_DIR_BEFORE="./drupal_ti/before"
+    #- DRUPAL_TI_SCRIPT_DIR_AFTER="./drupal_ti/after"
+
+    # The environment to use, supported are: drupal-7, drupal-8
+    - DRUPAL_TI_ENVIRONMENT="drupal-7"
+
     # Drupal specific vars.
     - DRUPAL_TI_DB="drupal_travis_db"
     - DRUPAL_TI_DB_URL="mysql://root:@127.0.0.1/drupal_travis_db"
