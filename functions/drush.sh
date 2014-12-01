@@ -14,7 +14,7 @@ function drupal_ti_ensure_drush() {
 
 	# install drush globally
 	echo "Installing drush: $DRUPAL_TI_DRUSH_VERSION"
-	composer global require "$DRUPAL_TI_DRUSH_VERSION"
+	composer global require --no-interaction "$DRUPAL_TI_DRUSH_VERSION"
 
 	touch "$TRAVIS_BUILD_DIR/../drupal_ti-drush-installed"
 }
