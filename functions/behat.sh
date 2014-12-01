@@ -13,7 +13,7 @@ function drupal_ti_ensure_xvfb() {
 	fi
 
 	# Run a virtual frame buffer server.
-	/etc/init.d/xvfb start
+	sudo /etc/init.d/xvfb start
 	sleep 3
 
 	touch "$TRAVIS_BUILD_DIR/../drupal_ti-xvfb-running"
@@ -49,5 +49,4 @@ function drupal_ti_replace_behat_vars() {
 		cat behat.yml.dist
 		echo "EOF"
 	} >> .behat.yml.sh
-	. .behat.yml.sh
 }
