@@ -40,6 +40,9 @@ function drupal_ti_ensure_selenium() {
 	touch "$TRAVIS_BUILD_DIR/../drupal_ti-selenium-running"
 }
 
+#
+# Replaces behat.yml from behat.yml.dist
+#
 function drupal_ti_replace_behat_vars() {
 	# Create a dynamic script.
 	{
@@ -49,4 +52,7 @@ function drupal_ti_replace_behat_vars() {
 		cat behat.yml.dist
 		echo "EOF"
 	} >> .behat.yml.sh
+
+	# Execute the script.
+	. .behat.yml.sh
 }
