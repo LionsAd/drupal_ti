@@ -13,7 +13,7 @@ function drupal_ti_ensure_xvfb() {
 	fi
 
 	# Run a virtual frame buffer server.
-        /usr/bin/Xvfb -- $DISPLAY -ac -screen 0 1280x1024x16 &
+        /usr/bin/Xvfb $DISPLAY -ac -screen 0 1280x1024x16 &
 	sleep 3
 
 	touch "$TRAVIS_BUILD_DIR/../drupal_ti-xvfb-running"
@@ -34,7 +34,7 @@ function drupal_ti_ensure_selenium() {
 	cd selenium-server
 
 	# @todo Make version configurable.
-	http://selenium-release.storage.googleapis.com/2.44/selenium-server-standalone-2.44.0.jar
+	wget http://selenium-release.storage.googleapis.com/2.44/selenium-server-standalone-2.44.0.jar
 	java -jar selenium-server-standalone-2.44.0.jar &
 	sleep 5
 	touch "$TRAVIS_BUILD_DIR/../drupal_ti-selenium-running"
