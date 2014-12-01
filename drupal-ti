@@ -38,7 +38,7 @@ export DRUPAL_TI_SCRIPT_DIR=$(dirname "$SELF_PATH")
 # Use Drupal-7 by default.
 if [ -z "$DRUPAL_TI_ENVIRONMENT" ]
 then
-	DRUPAL_TI_ENVIRONMENT="drupal-7"
+	export DRUPAL_TI_ENVIRONMENT="drupal-7"
 fi
 
 # Include the environment specific variables.
