@@ -13,7 +13,7 @@ function drupal_ti_ensure_xvfb() {
 	fi
 
 	# Run a virtual frame buffer server.
-	sudo /etc/init.d/xvfb start
+        /usr/bin/Xvfb -- $DISPLAY -ac -screen 0 1280x1024x16 &
 	sleep 3
 
 	touch "$TRAVIS_BUILD_DIR/../drupal_ti-xvfb-running"
