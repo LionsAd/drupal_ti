@@ -36,7 +36,11 @@ function drupal_ti_ensure_selenium() {
 	# @todo Make version configurable.
 	wget http://selenium-release.storage.googleapis.com/2.44/selenium-server-standalone-2.44.0.jar
 	java -jar selenium-server-standalone-2.44.0.jar &
-	sleep 5
+        until netstat -an 2>/dev/null | grep -q "4444.*LISTEN"
+        do
+                sleep 1
+        done
+
 	touch "$TRAVIS_BUILD_DIR/../drupal_ti-selenium-running"
 }
 
