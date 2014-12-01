@@ -7,4 +7,4 @@ Feature: Test DrupalContext
   Scenario: Test the ability to find a heading in a region
     Given I am on the homepage
     When I click "Site-Install"
-    Then I should see "Welcome to Site-Install"
+    Then I should see "Site-Install"
