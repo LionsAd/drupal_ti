@@ -78,3 +78,23 @@ function drupal_ti_run_server() {
 	done
 	touch "$TRAVIS_BUILD_DIR/../drupal_ti-drush-server-running"
 }
+
+#
+# Ensures a drush webserver can be started for PHP 5.3.
+#
+function drupal_ti_ensure_php_for_drush_webserver() {
+	# This function is re-entrant.
+	if [ -r "$TRAVIS_BUILD_DIR/../drupal_ti-php-for-webserver-installed" ]
+	then
+		return
+	fi
+
+	# install php packages required for running a web server from drush on php 5.3
+	PHP_VERSION=$(phpenv version-name)
+	if [ "$PHP_VERSION" = "5.3" ]
+	then
+		sudo apt-get update > /dev/null
+		sudo apt-get install -y --force-yes php5-cgi php5-mysql
+	fi
+	touch "$TRAVIS_BUILD_DIR/../drupal_ti-php-for-webserver-installed"
+}
