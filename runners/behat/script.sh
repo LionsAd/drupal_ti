@@ -12,6 +12,9 @@ cd "$DRUPAL_TI_DRUPAL_DIR/$DRUPAL_TI_MODULES_PATH/$DRUPAL_TI_MODULE_NAME"
 # @todo Test this.
 cd "$DRUPAL_TI_BEHAT_DIR"
 
+# We need to create a behat.yml file from behat.yml.dist.
+drupal_ti_replace_behat_vars
+
 # And run the tests.
 ARGS=( $DRUPAL_TI_BEHAT_ARGS )
 ./vendor/bin/behat "${ARGS[@]}"

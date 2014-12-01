@@ -33,8 +33,21 @@ function drupal_ti_ensure_selenium() {
 	mkdir -p selenium-server
 	cd selenium-server
 
-	wget http://selenium.googlecode.com/files/selenium-server-standalone-2.25.0.jar
-	java -jar selenium-server-standalone-2.25.0.jar -p 4444 &
+	# @todo Make version configurable.
+	http://selenium-release.storage.googleapis.com/2.44/selenium-server-standalone-2.44.0.jar
+	java -jar selenium-server-standalone-2.44.0.jar &
 	sleep 5
 	touch "$TRAVIS_BUILD_DIR/../drupal_ti-selenium-running"
+}
+
+function drupal_ti_replace_behat_vars() {
+	# Create a dynamic script.
+	{
+		echo "#!/bin/bash"
+		echo "cat <<EOF > behat.yml"
+		# @todo Make filename configurable.
+		cat behat.yml.dist
+		echo "EOF"
+	} >> .behat.yml.sh
+	. .behat.yml.sh
 }
