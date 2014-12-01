@@ -91,10 +91,7 @@ function drupal_ti_ensure_php_for_drush_webserver() {
 
 	# install php packages required for running a web server from drush on php 5.3
 	PHP_VERSION=$(phpenv version-name)
-	if [ "$PHP_VERSION" = "5.3" ]
-	then
-		sudo apt-get update > /dev/null
-		sudo apt-get install -y --force-yes php5-cgi php5-mysql
-	fi
+	sudo apt-get update > /dev/null
+	sudo apt-get install -y --force-yes php5-cgi php5-mysql
 	touch "$TRAVIS_BUILD_DIR/../drupal_ti-php-for-webserver-installed"
 }
