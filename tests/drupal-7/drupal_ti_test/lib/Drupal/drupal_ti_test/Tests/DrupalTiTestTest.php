@@ -40,6 +40,10 @@ class DrupalTiTestTest extends \DrupalWebTestCase {
     $test = new DrupalTiTest();
     $this->assertEqual('foo', $test->bar(), "Bar function of DrupalTiTest() returns foo.");
     //$this->assertEqual('foo', 'bar', 'This test will fail.');
+
+    $this->drupalGet('<front>');
+    $this->assertResponse(200, 'Front page exists.');
+    $this->assertText('Site-Install', 'Site-Install exists on the page.');
   }
 }
 
