@@ -43,7 +43,6 @@ class DrupalTiTestTest extends \DrupalWebTestCase {
 
     $this->drupalGet('<front>');
     $this->assertResponse(200, 'Front page exists.');
-    $this->assertText('Site-Install', 'Site-Install exists on the page.');
   }
 }
 
