@@ -16,4 +16,5 @@ cd "$DRUPAL_TI_DRUPAL_DIR"
 { php "$DRUPAL_TI_SIMPLETEST_FILE" --php $(which php) "${ARGS[@]}" || echo "1 fails"; } | tee /tmp/simpletest-result.txt
 
 egrep -i "([1-9]+ fail)|(PHP Fatal error)|([1-9]+ exception)" /tmp/simpletest-result.txt && exit 1
+egrep -i "^Fail" /tmp/simpletest-result.txt && exit 1
 exit 0
