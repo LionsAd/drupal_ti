@@ -17,3 +17,9 @@ export DRUPAL_TI_SIMPLETEST_FILE="scripts/run-tests.sh"
 export DRUPAL_TI_MODULES_PATH="sites/all/modules"
 export DRUPAL_TI_DRUPAL_BASE="$TRAVIS_BUILD_DIR/../drupal-7"
 export DRUPAL_TI_DRUPAL_DIR="$DRUPAL_TI_DRUPAL_BASE/drupal"
+
+PHP_VERSION=$(phpenv version-name)
+if [ "$PHP_VERSION" = "5.3" ]
+then
+	export DRUPAL_TI_DRUSH_VERSION="drush/drush:6.*"
+fi
