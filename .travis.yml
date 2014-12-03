@@ -24,6 +24,9 @@ matrix:
   exclude:
     - php: 5.3
       env: DRUPAL_TI_RUNNERS="test phpunit simpletest" DRUPAL_TI_ENVIRONMENT="drupal-8"
+  # Exclude HHVM for now, drush run-server of drush master does not work for it.
+    - php: hhvm
+      env: DRUPAL_TI_RUNNERS="test phpunit simpletest" DRUPAL_TI_ENVIRONMENT="drupal-8"
 
 env:
   global:
