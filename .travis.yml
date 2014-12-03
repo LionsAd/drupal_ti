@@ -11,16 +11,22 @@
 language: php
 
 php:
-#  - 5.3
+  - 5.3
   - 5.4
 #  - 5.5
 #  - 5.6
-#  - hhvm
+  - hhvm
 
 matrix:
   fast_finish: true
   allow_failures:
     - php: hhvm
+  exclude:
+    - php: 5.3
+      env: DRUPAL_TI_RUNNERS="test phpunit simpletest" DRUPAL_TI_ENVIRONMENT="drupal-8"
+  # Exclude HHVM for now, drush run-server of drush master does not work for it.
+    - php: hhvm
+      env: DRUPAL_TI_RUNNERS="test phpunit simpletest" DRUPAL_TI_ENVIRONMENT="drupal-8"
 
 env:
   global:
@@ -74,6 +80,7 @@ mysql:
   encoding: utf8
 
 before_install:
+  - composer self-update
   #  - composer global require LionsAd/drupal_ti:dev-master
   - mkdir -p "$HOME/.composer/vendor/bin"
   - ln -s $(pwd)/drupal-ti "$HOME/.composer/vendor/bin"
