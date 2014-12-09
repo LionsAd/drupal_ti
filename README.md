@@ -22,7 +22,7 @@ env:
     - DRUPAL_TI_RUNNERS="phpunit simpletest behat" 
 ````
 
-This example would run phpunit as one matrix runner, which gives you results fast, then both phpunit and simpletest as the slow runner.
+This example would run phpunit as one matrix runner, which gives you results fast, then phpunit, simpletest and behat as the slow runner.
 
 If you want to run drupal_ti with a Drupal-8 module, then you need to use:
 
@@ -82,7 +82,7 @@ Example:
 
 ### Roadmap
 
-- Support behat running with phantomjs and selenium.
+- Support behat running with phantomjs. (Firefox browser is already supported)
 
 Contributions are welcome.
 
