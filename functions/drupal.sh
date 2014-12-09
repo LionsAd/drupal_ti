@@ -72,10 +72,9 @@ function drupal_ti_run_server() {
 
 	# start a web server on port 8080, run in the background; wait for initialization
 	{ drush runserver "$DRUPAL_TI_WEBSERVER_URL:$DRUPAL_TI_WEBSERVER_PORT" 2>&1 | drupal_ti_log_output "webserver" ; } &
-	until netstat -an 2>/dev/null | grep -q "$DRUPAL_TI_WEBSERVER_PORT.*LISTEN"
-	do
-		sleep 1
-	done
+
+	# Wait until drush server has been started.
+	drupal_ti_wait_for_service_port "$DRUPAL_TI_WEBSERVER_PORT"
 	touch "$TRAVIS_BUILD_DIR/../drupal_ti-drush-server-running"
 }
 
@@ -97,4 +96,17 @@ function drupal_ti_ensure_php_for_drush_webserver() {
 		sudo apt-get install -y --force-yes php5-cgi php5-mysql
 	fi
 	touch "$TRAVIS_BUILD_DIR/../drupal_ti-php-for-webserver-installed"
+}
+
+#
+# Waits until a service using a port is ready.
+#
+function drupal_ti_wait_for_service_port() {
+	PORT=$1
+	shift
+
+	until netstat -an 2>/dev/null | grep -q "$PORT.*LISTEN"
+	do
+		sleep 1
+	done
 }
