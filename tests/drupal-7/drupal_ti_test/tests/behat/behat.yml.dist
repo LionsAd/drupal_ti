@@ -1,0 +1,19 @@
+default:
+  suites:
+    default:
+      contexts:
+        - Drupal\DrupalExtension\Context\DrupalContext
+        - Drupal\DrupalExtension\Context\DrushContext
+        - Drupal\DrupalExtension\Context\MinkContext
+  extensions:
+    Behat\MinkExtension:
+      base_url: "$DRUPAL_TI_WEBSERVER_URL:$DRUPAL_TI_WEBSERVER_PORT/"
+      goutte: ~
+      selenium2: ~
+      browser_name: firefox
+    Drupal\DrupalExtension:
+      blackbox: ~
+      api_driver: "drush"
+      drush_driver: "drush"
+      drush:
+        root: "$DRUPAL_TI_DRUPAL_DIR"

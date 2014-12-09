@@ -18,6 +18,9 @@ export DRUPAL_TI_MODULES_PATH="sites/all/modules"
 export DRUPAL_TI_DRUPAL_BASE="$TRAVIS_BUILD_DIR/../drupal-7"
 export DRUPAL_TI_DRUPAL_DIR="$DRUPAL_TI_DRUPAL_BASE/drupal"
 
+# Display used for running selenium browser.
+export DISPLAY=:99.0
+
 # PHP 5.3 and HHVM need Drush 6 to use php-cgi instead.
 PHP_VERSION=$(phpenv version-name)
 if [ "$PHP_VERSION" = "5.3" -o "$PHP_VERSION" = "hhvm" ]

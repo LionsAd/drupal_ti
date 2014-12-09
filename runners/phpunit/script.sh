@@ -1,6 +1,6 @@
 #!/bin/bash
 # @file
-# PHP Unit integration - Before Script step.
+# PHP Unit integration - Script step.
 
 set -e $DRUPAL_TI_DEBUG
 

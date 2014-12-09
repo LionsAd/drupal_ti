@@ -17,3 +17,6 @@ export DRUPAL_TI_SIMPLETEST_FILE="core/scripts/run-tests.sh"
 export DRUPAL_TI_MODULES_PATH="modules"
 export DRUPAL_TI_DRUPAL_BASE="$TRAVIS_BUILD_DIR/../drupal-8"
 export DRUPAL_TI_DRUPAL_DIR="$DRUPAL_TI_DRUPAL_BASE/drupal"
+
+# Display used for running selenium browser.
+export DISPLAY=:99.0

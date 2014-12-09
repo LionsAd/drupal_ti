@@ -22,11 +22,28 @@ matrix:
   allow_failures:
     - php: hhvm
   exclude:
+  # Drupal-8 does not work on PHP 5.3.
     - php: 5.3
-      env: DRUPAL_TI_RUNNERS="test phpunit simpletest" DRUPAL_TI_ENVIRONMENT="drupal-8"
+      env: DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8"
+
+  # Exclude single jobs from PHP 5.3 as well.
+    - php: 5.3
+      env: DRUPAL_TI_RUNNERS="phpunit" DRUPAL_TI_ENVIRONMENT="drupal-7"
+    - php: 5.3
+      env: DRUPAL_TI_RUNNERS="simpletest" DRUPAL_TI_ENVIRONMENT="drupal-7"
+    - php: 5.3
+      env: DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
+
   # Exclude HHVM for now, drush run-server of drush master does not work for it.
     - php: hhvm
-      env: DRUPAL_TI_RUNNERS="test phpunit simpletest" DRUPAL_TI_ENVIRONMENT="drupal-8"
+      env: DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8"
+  # Exclude single jobs from HHVM as well.
+  #  - php: hhvm
+  #    env: DRUPAL_TI_RUNNERS="phpunit" DRUPAL_TI_ENVIRONMENT="drupal-7"
+    - php: hhvm
+      env: DRUPAL_TI_RUNNERS="simpletest" DRUPAL_TI_ENVIRONMENT="drupal-7"
+    - php: hhvm
+      env: DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
 
 env:
   global:
@@ -34,7 +51,7 @@ env:
     # see: https://github.com/drush-ops/drush#install---composer
     - PATH="$PATH:$HOME/.composer/vendor/bin"
 
-    # Configuration vars.
+    # Configuration variables.
     - DRUPAL_TI_MODULE_NAME="drupal_ti_test"
 
     # Note: This is customized for drupal-8 environment in
@@ -49,7 +66,7 @@ env:
     # The environment to use, supported are: drupal-7, drupal-8
     #- DRUPAL_TI_ENVIRONMENT="drupal-7"
 
-    # Drupal specific vars.
+    # Drupal specific variables.
     - DRUPAL_TI_DB="drupal_travis_db"
     - DRUPAL_TI_DB_URL="mysql://root:@127.0.0.1/drupal_travis_db"
     # Note: Do not add a trailing slash here.
@@ -58,6 +75,18 @@ env:
 
     # Simpletest specific commandline arguments, the DRUPAL_TI_SIMPLETEST_GROUP is appended at the end.
     - DRUPAL_TI_SIMPLETEST_ARGS="--verbose --color --concurrency 4 --url $DRUPAL_TI_WEBSERVER_URL:$DRUPAL_TI_WEBSERVER_PORT"
+
+    # === Behat specific variables.
+    # This is relative to $TRAVIS_BUILD_DIR
+    - DRUPAL_TI_BEHAT_DIR="./tests/behat"
+    # These arguments are passed to the bin/behat command.
+    - DRUPAL_TI_BEHAT_ARGS=""
+    # Specify the filename of the behat.yml with the $DRUPAL_TI_DRUPAL_DIR variables.
+    - DRUPAL_TI_BEHAT_YML="behat.yml.dist"
+    # This is used to setup Xvfb.
+    - DRUPAL_TI_BEHAT_SCREENSIZE_COLOR="1280x1024x16"
+    # The version of seleniumthat should be used.
+    - DRUPAL_TI_BEHAT_SELENIUM_VERSION="2.44"
 
     # PHPUnit specific commandline arguments.
     - DRUPAL_TI_PHPUNIT_ARGS=""
@@ -69,10 +98,18 @@ env:
 
     # Debug options
     #- DRUPAL_TI_DEBUG="-x -v"
+    # Set to "all" to output all files, set to e.g. "xvfb selenium" or "selenium",
+    # etc. to only output those channels.
+    - DRUPAL_TI_DEBUG_FILE_OUTPUT="selenium xvfb webserver"
 
   matrix:
-    - DRUPAL_TI_RUNNERS="test phpunit simpletest" DRUPAL_TI_ENVIRONMENT="drupal-7"
-    - DRUPAL_TI_RUNNERS="test phpunit simpletest" DRUPAL_TI_ENVIRONMENT="drupal-8"
+    # Ensure that runners work isolated.
+    - DRUPAL_TI_RUNNERS="phpunit" DRUPAL_TI_ENVIRONMENT="drupal-7"
+    - DRUPAL_TI_RUNNERS="simpletest" DRUPAL_TI_ENVIRONMENT="drupal-7"
+    - DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
+    # And in combination.
+    - DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
+    - DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8"
 
 mysql:
   database: drupal_travis_db

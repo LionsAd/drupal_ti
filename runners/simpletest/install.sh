@@ -3,13 +3,8 @@
 
 set -e $DRUPAL_TI_DEBUG
 
-# install php packages required for running a web server from drush on php 5.3
-PHP_VERSION=$(phpenv version-name)
-if [ "$PHP_VERSION" = "5.3" ]
-then
-	sudo apt-get update > /dev/null
-	sudo apt-get install -y --force-yes php5-cgi php5-mysql
-fi
+# Ensure drush webserver can be started for PHP 5.3.
+drupal_ti_ensure_php_for_drush_webserver
 
-# install drush globally
-composer global require "$DRUPAL_TI_DRUSH_VERSION"
+# Ensure that drush is installed.
+drupal_ti_ensure_drush
