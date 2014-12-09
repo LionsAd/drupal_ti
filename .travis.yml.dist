@@ -51,8 +51,14 @@ env:
     # === Behat specific variables.
     # This is relative to $TRAVIS_BUILD_DIR
     - DRUPAL_TI_BEHAT_DIR="./tests/behat"
-    # This arguments are passed to the bin/behat command.
+    # These arguments are passed to the bin/behat command.
     - DRUPAL_TI_BEHAT_ARGS=""
+    # Specify the filename of the behat.yml with the $DRUPAL_TI_DRUPAL_DIR variables.
+    - DRUPAL_TI_BEHAT_YML="behat.yml.dist"
+    # This is used to setup Xvfb.
+    - DRUPAL_TI_BEHAT_SCREENSIZE_COLOR="1280x1024x16"
+    # The version of seleniumthat should be used.
+    - DRUPAL_TI_BEHAT_SELENIUM_VERSION="2.44"
 
     # PHPUnit specific commandline arguments.
     - DRUPAL_TI_PHPUNIT_ARGS=""
