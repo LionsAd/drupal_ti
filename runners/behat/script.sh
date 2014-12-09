@@ -9,7 +9,6 @@ cd "$DRUPAL_TI_DRUPAL_DIR/$DRUPAL_TI_MODULES_PATH/$DRUPAL_TI_MODULE_NAME"
 
 # Now go to the local behat tests, being within the module installation is
 # needed for example for the drush runner.
-# @todo Test this.
 cd "$DRUPAL_TI_BEHAT_DIR"
 
 # We need to create a behat.yml file from behat.yml.dist.
