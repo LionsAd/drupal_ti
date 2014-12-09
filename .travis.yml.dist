@@ -70,6 +70,9 @@ env:
 
     # Debug options
     #- DRUPAL_TI_DEBUG="-x -v"
+    # Set to "all" to output all files, set to e.g. "xvfb selenium" or "selenium",
+    # etc. to only output those channels.
+    #- DRUPAL_TI_DEBUG_FILE_OUTPUT="selenium xvfb"
 
   matrix:
     # [[[ SELECT ANY OR MORE OPTIONS ]]]
