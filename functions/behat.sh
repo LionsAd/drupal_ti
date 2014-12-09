@@ -13,7 +13,7 @@ function drupal_ti_ensure_xvfb() {
 	fi
 
 	# Run a virtual frame buffer server.
-        { /usr/bin/Xvfb $DISPLAY -ac -screen 0 "$DRUPAL_TI_BEHAT_SCREENSIZE_COLOR" | drupal_ti_log_output "xvfb"; } &
+        { /usr/bin/Xvfb $DISPLAY -ac -screen 0 "$DRUPAL_TI_BEHAT_SCREENSIZE_COLOR" 2>&1 | drupal_ti_log_output "xvfb"; } &
 	sleep 3
 
 	touch "$TRAVIS_BUILD_DIR/../drupal_ti-xvfb-running"
@@ -35,7 +35,7 @@ function drupal_ti_ensure_selenium() {
 
 	# @todo Make whole file URL overridable via defaults based on env.
 	wget "http://selenium-release.storage.googleapis.com/$DRUPAL_TI_BEHAT_SELENIUM_VERSION/selenium-server-standalone-$DRUPAL_TI_BEHAT_SELENIUM_VERSION.0.jar"
-	{ java -jar "selenium-server-standalone-$DRUPAL_TI_BEHAT_SELENIUM_VERSION.0.jar" | drupal_ti_log_output "selenium" ; } &
+	{ java -jar "selenium-server-standalone-$DRUPAL_TI_BEHAT_SELENIUM_VERSION.0.jar" 2>&1 | drupal_ti_log_output "selenium" ; } &
 	until netstat -an 2>/dev/null | grep -q "4444.*LISTEN"
 	do
 		sleep 1
