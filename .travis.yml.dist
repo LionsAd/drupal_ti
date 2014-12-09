@@ -78,7 +78,8 @@ env:
     # [[[ SELECT ANY OR MORE OPTIONS ]]]
     #- DRUPAL_TI_RUNNERS="phpunit"
     #- DRUPAL_TI_RUNNERS="simpletest"
-    #- DRUPAL_TI_RUNNERS="phpunit simpletest"
+    #- DRUPAL_TI_RUNNERS="behat"
+    #- DRUPAL_TI_RUNNERS="phpunit simpletest behat"
 
 mysql:
   database: drupal_travis_db
