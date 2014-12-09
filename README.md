@@ -12,14 +12,14 @@ All you need is to push your drupal.org repository to Github, setup the module b
 
 Copy .travis.yml.dist to your root folder as .travis.yml and customize the DRUPAL\_TI\_MODULE\_NAME global environment variable to match the name of your module.
 
-You will also need to activate one matrix option, based on if you have support for simpletest, phpunit or both:
+You will also need to activate one matrix option, based on if you have support for Simpletest, PHPUnit, Behat or all together:
 
 ````
 env:
   matrix:
     # [[[ SELECT ANY OR MORE OPTIONS ]]]
     - DRUPAL_TI_RUNNERS="phpunit" 
-    - DRUPAL_TI_RUNNERS="phpunit simpletest" 
+    - DRUPAL_TI_RUNNERS="phpunit simpletest behat" 
 ````
 
 This example would run phpunit as one matrix runner, which gives you results fast, then both phpunit and simpletest as the slow runner.
