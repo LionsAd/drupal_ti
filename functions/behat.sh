@@ -36,10 +36,10 @@ function drupal_ti_ensure_selenium() {
 	# @todo Make whole file URL overridable via defaults based on env.
 	wget "http://selenium-release.storage.googleapis.com/$DRUPAL_TI_BEHAT_SELENIUM_VERSION/selenium-server-standalone-$DRUPAL_TI_BEHAT_SELENIUM_VERSION.0.jar"
 	java -jar "selenium-server-standalone-$DRUPAL_TI_BEHAT_SELENIUM_VERSION.0.jar" &
-        until netstat -an 2>/dev/null | grep -q "4444.*LISTEN"
-        do
-                sleep 1
-        done
+	until netstat -an 2>/dev/null | grep -q "4444.*LISTEN"
+	do
+		sleep 1
+	done
 
 	touch "$TRAVIS_BUILD_DIR/../drupal_ti-selenium-running"
 }
@@ -52,7 +52,6 @@ function drupal_ti_replace_behat_vars() {
 	{
 		echo "#!/bin/bash"
 		echo "cat <<EOF > behat.yml"
-		# @todo Make filename configurable.
 		cat "$DRUPAL_TI_BEHAT_YML"
 		echo "EOF"
 	} >> .behat.yml.sh
