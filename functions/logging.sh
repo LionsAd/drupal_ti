@@ -23,7 +23,10 @@ function drupal_ti_log_output() {
 	if [ -n "$LOG_OUTPUT" ]
 	then
 		echo "Logging output of '$FILE' channel to $LOGFILE and stdout."
-		tee "$LOGFILE" | nl -b n -s "$FILE>  "
+		tee "$LOGFILE" | while read LINE
+		do
+			echo "... $FILE>   $LINE"
+		done
 	else
 		echo "Logging output of '$FILE' channel to $LOGFILE."
 		cat - > "$LOGFILE"
