@@ -8,6 +8,9 @@
 
 language: php
 
+# Comment out this line if you only use unit tests.
+sudo: required
+
 php:
   - 5.3
   - 5.4
