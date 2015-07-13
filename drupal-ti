@@ -11,6 +11,9 @@ then
 	echo "Usage: $0 <cmd>" 1>&2
 	echo "" 1>&2
 	echo "- cmd: A valid travis-ci command, e.g. before-script, script, after-script." 1>&2
+	echo "" 1>&2
+	echo "       Use --include to include an arbitrary script within the drupal_ti environment." 1>&2
+	echo "" 1>&2
 	exit 1
 fi
 
@@ -43,6 +46,15 @@ fi
 
 # Include the environment specific variables.
 export DRUPAL_TI_SCRIPT_DIRS="$DRUPAL_TI_SCRIPT_DIR_BEFORE $DRUPAL_TI_SCRIPT_DIR $DRUPAL_TI_SCRIPT_DIR_AFTER"
+
+# In case the special '--include' flag was given, just include the given command with vars set.
+if [ "$CMD" = '--include' ]
+then
+	shift
+	SCRIPT="$1"
+	"$DRUPAL_TI_SCRIPT_DIR/utility/include-script.sh" "$SCRIPT"
+	exit 0
+fi
 
 # From here on in, we handle failures ourselves.
 set +e

@@ -24,8 +24,10 @@ matrix:
   allow_failures:
     - php: hhvm
   exclude:
-  # Drupal-8 does not work on PHP 5.3.
+  # Drupal-8 does not work on PHP 5.3 or PHP 5.4.
     - php: 5.3
+      env: DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8"
+    - php: 5.4
       env: DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8"
 
   # Exclude single jobs from PHP 5.3 as well.
@@ -136,6 +138,7 @@ install:
   - drupal-ti install
 
 before_script:
+  - drupal-ti --include ../scripts/test-include.sh
   - drupal-ti before_script
 
 script:
