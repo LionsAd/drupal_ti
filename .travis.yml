@@ -136,6 +136,7 @@ install:
   - drupal-ti install
 
 before_script:
+  - drupal-ti --include scripts/test-include.sh
   - drupal-ti before_script
 
 script:
