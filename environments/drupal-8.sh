@@ -18,7 +18,7 @@ export DRUPAL_TI_MODULES_PATH="modules"
 export DRUPAL_TI_DRUPAL_BASE="$TRAVIS_BUILD_DIR/../drupal-8"
 export DRUPAL_TI_DRUPAL_DIR="$DRUPAL_TI_DRUPAL_BASE/drupal"
 export DRUPAL_TI_DIST_DIR="$HOME/.dist"
-export PATH="$PATH:$DRUPAL_TI_DIST_DIR/usr/bin"
+export PATH="$DRUPAL_TI_DIST_DIR/usr/bin:$PATH"
 
 # Display used for running selenium browser.
 export DISPLAY=:99.0
