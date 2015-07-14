@@ -72,11 +72,11 @@ function drupal_ti_run_server() {
 
 	OPTIONS=()
 
-	# Set PHP CGI explicitly to php5-cgi full path.
+	# Set PHP CGI explicitly to php-cgi full path.
 	PHP_VERSION=$(phpenv version-name)
 	if [ "$PHP_VERSION" = "5.3" -o "$PHP_VERSION" = "hhvm" ]
 	then
-		PHP5_CGI=$(which php5-cgi)
+		PHP5_CGI=$(which php-cgi)
 		OPTIONS=( "${OPTIONS[@]}" --php-cgi="$PHP5_CGI")
 	fi
 
