@@ -70,11 +70,6 @@ function drupal_ti_run_server() {
 		return
 	fi
 
-        echo "Waiting for HHVM to start ..."
-        sleep 10
-	SCRIPT_NAME=/index.php SCRIPT_FILENAME="$DRUPAL_TI_DRUPAL_DIR/index.php" REQUEST_METHOD=GET php5-cgi
-	exit 1
-
 	OPTIONS=()
 
 	# Set PHP CGI explicitly to php5-cgi full path.
@@ -97,8 +92,6 @@ function drupal_ti_run_server() {
 	# Wait until drush server has been started.
 	drupal_ti_wait_for_service_port "$DRUPAL_TI_WEBSERVER_PORT"
 	touch "$TRAVIS_BUILD_DIR/../drupal_ti-drush-server-running"
-	# debug
-	curl -I "$DRUPAL_TI_WEBSERVER_URL:$DRUPAL_TI_WEBSERVER_PORT/"
 }
 
 # @todo Move
