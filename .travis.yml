@@ -13,12 +13,12 @@ language: php
 sudo: false
 
 php:
-  - 5.3
+#  - 5.3
   - 5.4
-  - 5.5
-  - 5.6
-  - 7
-  - hhvm
+#  - 5.5
+#  - 5.6
+#  - 7
+#  - hhvm
 
 matrix:
   fast_finish: true
@@ -31,10 +31,10 @@ matrix:
     - php: 5.4
       env: DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8"
   include:
-    - php: 5.4
-      env: DRUPAL_TI_RUNNERS="phpunit" DRUPAL_TI_ENVIRONMENT="drupal-7"
-    - php: 5.4
-      env: DRUPAL_TI_RUNNERS="simpletest" DRUPAL_TI_ENVIRONMENT="drupal-7"
+ #   - php: 5.4
+ #     env: DRUPAL_TI_RUNNERS="phpunit" DRUPAL_TI_ENVIRONMENT="drupal-7"
+ #   - php: 5.4
+ #     env: DRUPAL_TI_RUNNERS="simpletest" DRUPAL_TI_ENVIRONMENT="drupal-7"
     - php: 5.4
       env: DRUPAL_TI_BEHAT_BROWSER="firefox" DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
     - php: 5.4
