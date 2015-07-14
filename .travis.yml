@@ -31,13 +31,34 @@ matrix:
     - php: 5.4
       env: DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8"
 
-  # Exclude single jobs from PHP 5.3 as well.
+  # Exclude single jobs from PHP 5.3, 5.5-7 as well.
     - php: 5.3
       env: DRUPAL_TI_RUNNERS="phpunit" DRUPAL_TI_ENVIRONMENT="drupal-7"
     - php: 5.3
       env: DRUPAL_TI_RUNNERS="simpletest" DRUPAL_TI_ENVIRONMENT="drupal-7"
     - php: 5.3
       env: DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
+
+    - php: 5.5
+      env: DRUPAL_TI_RUNNERS="phpunit" DRUPAL_TI_ENVIRONMENT="drupal-7"
+    - php: 5.5
+      env: DRUPAL_TI_RUNNERS="simpletest" DRUPAL_TI_ENVIRONMENT="drupal-7"
+    - php: 5.5
+      env: DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
+
+    - php: 5.6
+      env: drupal_ti_runners="phpunit" drupal_ti_environment="drupal-7"
+    - php: 5.6
+      env: drupal_ti_runners="simpletest" drupal_ti_environment="drupal-7"
+    - php: 5.6
+      env: drupal_ti_runners="behat" drupal_ti_environment="drupal-7"
+
+    - php: 7
+      env: drupal_ti_runners="phpunit" drupal_ti_environment="drupal-7"
+    - php: 7
+      env: drupal_ti_runners="simpletest" drupal_ti_environment="drupal-7"
+    - php: 7
+      env: drupal_ti_runners="behat" drupal_ti_environment="drupal-7"
 
   # Exclude single jobs from HHVM as well.
     - php: hhvm
