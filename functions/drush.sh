@@ -12,9 +12,18 @@ function drupal_ti_ensure_drush() {
 		return
 	fi
 
-	# install drush globally
-	echo "Installing drush: $DRUPAL_TI_DRUSH_VERSION"
-	composer global require --no-interaction "$DRUPAL_TI_DRUSH_VERSION"
+	# Check if drush is already available.
+	DRUSH=$(which drush || echo "")
+
+	if [ -z "$DRUSH" ]
+	then
+		# install drush globally
+		echo "Installing drush: $DRUPAL_TI_DRUSH_VERSION"
+		composer global require --no-interaction "$DRUPAL_TI_DRUSH_VERSION"
+	else
+		echo "Drush $DRUPAL_TI_DRUSH_VERSION is already installed."
+		composer global install --no-interaction
+	fi
 
 	touch "$TRAVIS_BUILD_DIR/../drupal_ti-drush-installed"
 }

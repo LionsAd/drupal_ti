@@ -10,7 +10,7 @@ default:
       base_url: "$DRUPAL_TI_WEBSERVER_URL:$DRUPAL_TI_WEBSERVER_PORT/"
       goutte: ~
       selenium2: ~
-      browser_name: firefox
+      browser_name: "$DRUPAL_TI_BEHAT_BROWSER"
     Drupal\DrupalExtension:
       blackbox: ~
       api_driver: "drush"

@@ -70,12 +70,87 @@ function drupal_ti_run_server() {
 		return
 	fi
 
-	# start a web server on port 8080, run in the background; wait for initialization
-	{ drush runserver "$DRUPAL_TI_WEBSERVER_URL:$DRUPAL_TI_WEBSERVER_PORT" 2>&1 | drupal_ti_log_output "webserver" ; } &
+	# Use hhvm_serve for PHP 5.3 fcgi and hhvm fcgi
+	PHP_VERSION=$(phpenv version-name)
+	if [ "$PHP_VERSION" = "5.3" -o "$PHP_VERSION" = "hhvm" ]
+	then
+		export GOPATH="$DRUPAL_TI_DIST_DIR/go"
+		export DRUPAL_TI_WEBSERVER_HOST=$(echo "$DRUPAL_TI_WEBSERVER_URL" | sed 's,http://,,')
+		{ "$GOPATH/bin/hhvm-serve" -listen="$DRUPAL_TI_WEBSERVER_HOST:$DRUPAL_TI_WEBSERVER_PORT" 2>&1 | drupal_ti_log_output "webserver" ; } &
+	else
+		# start a web server on port 8080, run in the background; wait for initialization
+		{ drush runserver "$DRUPAL_TI_WEBSERVER_URL:$DRUPAL_TI_WEBSERVER_PORT" 2>&1 | drupal_ti_log_output "webserver" ; } &
+	fi
 
 	# Wait until drush server has been started.
 	drupal_ti_wait_for_service_port "$DRUPAL_TI_WEBSERVER_PORT"
 	touch "$TRAVIS_BUILD_DIR/../drupal_ti-drush-server-running"
+}
+
+#
+# Ensure hhvm runs in daemon mode.
+#
+function drupal_ti_ensure_hhvm_fastcgi() {
+	# PHP-FPM
+	export DRUPAL_TI_HHVM_INI="$TRAVIS_BUILD_DIR/../php-hhvm.ini"
+cat <<EOF >"$DRUPAL_TI_HHVM_INI"
+; php options
+
+pid = /tmp/hvvm.pid
+
+; hhvm specific
+
+hhvm.server.port = 9000
+hhvm.server.type = fastcgi
+hhvm.server.default_document = index.php
+hhvm.log.use_log_file = true
+hhvm.log.file = /tmp/hhvm-error.log
+hhvm.repo.central.path = /tmp/hhvm.hhbc
+EOF
+
+	hhvm --config "$DRUPAL_TI_HHVM_INI" --mode daemon
+	sleep 2
+	{ tail -f /tmp/hhvm-error.log | drupal_ti_log_output "hhvm"; } &
+}
+
+#
+# Ensure that PHP FPM runs.
+#
+function drupal_ti_ensure_php_fpm() {
+	# PHP-FPM
+	export DRUPAL_TI_PHP_FPM_CONF="$TRAVIS_BUILD_DIR/../php-fpm.conf"
+cat <<EOF >"$DRUPAL_TI_PHP_FPM_CONF"
+error_log = /tmp/fpm-php.log
+
+[www]
+user = travis
+group = travis
+
+listen = 9000
+listen.owner = travis
+listen.group = travis
+listen.mode = 0666
+listen.allowed_clients = 127.0.0.1
+
+pm = dynamic
+pm.max_children = 5
+pm.start_servers = 2
+pm.min_spare_servers = 1
+pm.max_spare_servers = 3
+
+pm.status_path = /php-fpm-status
+ping.path = /php-fpm-ping
+EOF
+	{ php-fpm -F -y "$DRUPAL_TI_PHP_FPM_CONF" | drupal_ti_log_output "php-fpm"; } &
+}
+
+#
+# Ensure that hhvm_serve is installed
+#
+function drupal_ti_ensure_hhvm_serve() {
+	export GOPATH="$DRUPAL_TI_DIST_DIR/go"
+	mkdir -p "$GOPATH"
+	go get github.com/beberlei/hhvm-serve
 }
 
 #
@@ -90,11 +165,18 @@ function drupal_ti_ensure_php_for_drush_webserver() {
 
 	# install php packages required for running a web server from drush on php 5.3
 	PHP_VERSION=$(phpenv version-name)
-	if [ "$PHP_VERSION" = "5.3" ]
+	if [ "$PHP_VERSION" != "5.3" -a "$PHP_VERSION" != "hhvm" ]
 	then
-		sudo apt-get update > /dev/null
-		sudo apt-get install -y --force-yes php5-cgi php5-mysql
+		return
 	fi
+	if [ "$PHP_VERSION" = "hhvm" ]
+	then
+		drupal_ti_ensure_hhvm_fastcgi
+	else
+		drupal_ti_ensure_php_fpm
+	fi
+
+	drupal_ti_ensure_hhvm_serve
 	touch "$TRAVIS_BUILD_DIR/../drupal_ti-php-for-webserver-installed"
 }
 
@@ -105,8 +187,17 @@ function drupal_ti_wait_for_service_port() {
 	PORT=$1
 	shift
 
-	until netstat -an 2>/dev/null | grep -q "$PORT.*LISTEN"
+	COUNT=0
+	# Try to connect to the port via netcat.
+	# netstat is not available on the container builds.
+	until nc -w 1 localhost "$PORT"
 	do
 		sleep 1
+		COUNT=$[COUNT+1]
+		if [ $COUNT -gt 10 ]
+		then
+			echo "Error: Timeout while waiting for webserver." 1>&2
+			exit 1
+		fi
 	done
 }
