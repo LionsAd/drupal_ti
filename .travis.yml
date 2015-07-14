@@ -24,49 +24,37 @@ matrix:
   fast_finish: true
   allow_failures:
     - php: hhvm
-  exclude:
+  include:
   # Drupal-8 does not work on PHP 5.3 or PHP 5.4.
-    - php: 5.3
+    - php: 5.5
       env: DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8"
+    - php: 5.6
+      env: DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8"
+    - php: 7
+      env: DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8"
+    - php: hhvm
+      env: DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8"
+
+  # Include single jobs for PHP 5.4 as well.
     - php: 5.4
-      env: DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8"
-
-  # Exclude single jobs from PHP 5.3, 5.5-7 as well.
+      env: DRUPAL_TI_RUNNERS="phpunit" DRUPAL_TI_ENVIRONMENT="drupal-7"
+    - php: 5.4
+      env: DRUPAL_TI_RUNNERS="simpletest" DRUPAL_TI_ENVIRONMENT="drupal-7"
+    - php: 5.4
+      env: DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
+  # All the rest
     - php: 5.3
-      env: DRUPAL_TI_RUNNERS="phpunit" DRUPAL_TI_ENVIRONMENT="drupal-7"
-    - php: 5.3
-      env: DRUPAL_TI_RUNNERS="simpletest" DRUPAL_TI_ENVIRONMENT="drupal-7"
-    - php: 5.3
-      env: DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
-
+      env: DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
+    - php: 5.4
+      env: DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
     - php: 5.5
-      env: DRUPAL_TI_RUNNERS="phpunit" DRUPAL_TI_ENVIRONMENT="drupal-7"
-    - php: 5.5
-      env: DRUPAL_TI_RUNNERS="simpletest" DRUPAL_TI_ENVIRONMENT="drupal-7"
-    - php: 5.5
-      env: DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
-
+      env: DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
     - php: 5.6
-      env: DRUPAL_TI_RUNNERS="phpunit" DRUPAL_TI_ENVIRONMENT="drupal-7"
-    - php: 5.6
-      env: DRUPAL_TI_RUNNERS="simpletest" DRUPAL_TI_ENVIRONMENT="drupal-7"
-    - php: 5.6
-      env: DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
-
+      env: DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
     - php: 7
-      env: DRUPAL_TI_RUNNERS="phpunit" DRUPAL_TI_ENVIRONMENT="drupal-7"
-    - php: 7
-      env: DRUPAL_TI_RUNNERS="simpletest" DRUPAL_TI_ENVIRONMENT="drupal-7"
-    - php: 7
-      env: DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
-
-  # Exclude single jobs from HHVM as well.
+      env: DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
     - php: hhvm
-      env: DRUPAL_TI_RUNNERS="phpunit" DRUPAL_TI_ENVIRONMENT="drupal-7"
-    - php: hhvm
-      env: DRUPAL_TI_RUNNERS="simpletest" DRUPAL_TI_ENVIRONMENT="drupal-7"
-    - php: hhvm
-      env: DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
+      env: DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
 
 env:
   global:
