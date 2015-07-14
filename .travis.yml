@@ -36,7 +36,11 @@ matrix:
     - php: 5.4
       env: DRUPAL_TI_RUNNERS="simpletest" DRUPAL_TI_ENVIRONMENT="drupal-7"
     - php: 5.4
-      env: DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
+      env: DRUPAL_TI_BEHAT_BROWSER="firefox" DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
+    - php: 5.4
+      env: DRUPAL_TI_BEHAT_BROWSER="chrome" DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
+    - php: 5.4
+      env: DRUPAL_TI_BEHAT_DRIVER="selenium" DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
 
 env:
   global:
