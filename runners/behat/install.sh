@@ -13,7 +13,3 @@ drupal_ti_ensure_php_for_drush_webserver
 
 # Ensure that drush is installed.
 drupal_ti_ensure_drush
-
-# Install firefox
-sudo apt-get update > /dev/null
-sudo apt-get install -y --force-yes firefox xvfb

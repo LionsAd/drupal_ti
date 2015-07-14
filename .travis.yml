@@ -10,13 +10,14 @@
 
 language: php
 
-sudo: required
+sudo: false
 
 php:
   - 5.3
   - 5.4
-#  - 5.5
-#  - 5.6
+  - 5.5
+  - 5.6
+  - 7
   - hhvm
 
 matrix:
@@ -91,6 +92,8 @@ env:
     - DRUPAL_TI_BEHAT_SCREENSIZE_COLOR="1280x1024x16"
     # The version of seleniumthat should be used.
     - DRUPAL_TI_BEHAT_SELENIUM_VERSION="2.44"
+    - DRUPAL_TI_BEHAT_DRIVER="phantomjs"
+    - DRUPAL_TI_BEHAT_BROWSER="firefox"
 
     # PHPUnit specific commandline arguments.
     - DRUPAL_TI_PHPUNIT_ARGS=""

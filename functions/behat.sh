@@ -35,13 +35,126 @@ function drupal_ti_ensure_selenium() {
 
 	# @todo Make whole file URL overridable via defaults based on env.
 	wget "http://selenium-release.storage.googleapis.com/$DRUPAL_TI_BEHAT_SELENIUM_VERSION/selenium-server-standalone-$DRUPAL_TI_BEHAT_SELENIUM_VERSION.0.jar"
-	{ java -jar "selenium-server-standalone-$DRUPAL_TI_BEHAT_SELENIUM_VERSION.0.jar" 2>&1 | drupal_ti_log_output "selenium" ; } &
+	{ java -jar "selenium-server-standalone-$DRUPAL_TI_BEHAT_SELENIUM_VERSION.0.jar" $DRUPAL_TI_BEHAT_SELENIUM_ARGS 2>&1 | drupal_ti_log_output "selenium" ; } &
 
         # Wait until selenium has been started.
         drupal_ti_wait_for_service_port 4444
 
 	touch "$TRAVIS_BUILD_DIR/../drupal_ti-selenium-running"
 }
+
+#
+# Ensures that phantomjs is running.
+#
+function drupal_ti_ensure_phantomjs() {
+	# This function is re-entrant.
+	if [ -r "$TRAVIS_BUILD_DIR/../drupal_ti-phantomjs-running" ]
+	then
+		return
+	fi
+
+	{ phantomjs $DRUPAL_TI_BEHAT_PHANTOMJS_ARGS 2>&1 | drupal_ti_log_output "selenium" ; } &
+
+        # Wait until selenium has been started.
+        drupal_ti_wait_for_service_port 4444
+
+	touch "$TRAVIS_BUILD_DIR/../drupal_ti-phantomjs-running"
+}
+
+#
+# Ensures local bin dir exists and variables are set.
+#
+function drupal_ti_ensure_bin_dir() {
+        # Create bin dir
+        export DRUPAL_TI_BIN_DIR=$(cd "$TRAVIS_BUILD_DIR/../drupal_travis/bin"; pwd)
+        mkdir -p "$DRUPAL_TI_BIN_DIR"
+        export PATH="$DRUPAL_TI_BIN_DIR:$PATH"
+}
+
+#
+# Ensures that chrome is installed.
+#
+function drupal_ti_ensure_chrome() {
+	# This function is re-entrant.
+	if [ -r "$TRAVIS_BUILD_DIR/../drupal_ti-chrome-installed" ]
+	then
+		return
+	fi
+
+	drupal_ti_ensure_apt_get
+	(
+		cd $DRUPAL_TI_DIST_DIR
+		# @todo Make version configurable.
+		wget -O google-chrome-stable_current_amd64.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+		dpkg -x google-chrome-stable_current_amd64.deb .
+	)
+	drupal_ti_ensure_bin_dir
+	cat <<EOF >$DRUPAL_TI_BIN_DIR/chromium-browser
+#!/bin/bash
+
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:"
+$DRUPAL_TI_DIST_DIR/opt/google/chrome/google-chrome --no-sandbox "\$@"
+EOF
+	chmod a+x $DRUPAL_TI_BIN_DIR/chromium-browser
+	touch "$TRAVIS_BUILD_DIR/../drupal_ti-chrome-installed"
+}
+
+#
+# Ensures that chrome driver is installed.
+#
+function drupal_ti_ensure_chrome_driver() {
+	# This function is re-entrant.
+	if [ -r "$TRAVIS_BUILD_DIR/../drupal_ti-chrome-driver-installed" ]
+	then
+		return
+	fi
+
+	drupal_ti_ensure_bin_dir
+	cd $DRUPAL_TI_BIN_DIR
+
+	# @todo Make version configurable.
+	wget http://chromedriver.storage.googleapis.com/2.13/chromedriver_linux64.zip
+	unzip chromedriver_linux64.zip
+	rm -f chromedriver_linux64.zip
+	chmod a+x chromedriver
+	drupal_ti_ensure_chrome
+
+	touch "$TRAVIS_BUILD_DIR/../drupal_ti-chrome-driver-installed"
+}
+
+
+#
+# Ensures that webdriver is running.
+#
+function drupal_ti_ensure_webdriver() {
+        # This function is re-entrant.
+        if [ -r "$TRAVIS_BUILD_DIR/../drupal_ti-selenium-running" ]
+        then
+                return
+        fi
+
+	export DRUPAL_TI_BEHAT_PHANTOMJS_ARGS="--webdriver=127.0.0.1:4444"
+	export DRUPAL_TI_BEHAT_SELENIUM_ARGS=""
+
+	if [ "$DRUPAL_TI_BEHAT_BROWSER" = "chrome" ]
+	then
+		drupal_ti_ensure_chrome_driver
+		CHROMEDRIVER=$(which chromedriver || echo "")
+		DRUPAL_TI_BEHAT_SELENIUM_ARGS="-Dwebdriver.chrome.driver=$CHROMEDRIVER $DRUPAL_TI_BEHAT_SELENIUM_ARGS"
+	fi
+
+	case "$DRUPAL_TI_BEHAT_DRIVER" in
+		"phantomjs")
+			drupal_ti_ensure_phantomjs
+		;;
+		"selenium"|*)
+			drupal_ti_ensure_selenium
+		;;
+	esac
+
+        touch "$TRAVIS_BUILD_DIR/../drupal_ti-selenium-running"
+}
+
 
 #
 # Replaces behat.yml from behat.yml.dist
