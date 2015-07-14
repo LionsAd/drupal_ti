@@ -124,15 +124,6 @@ EOF
 # Ensure that PHP FPM runs.
 #
 function drupal_ti_ensure_php_fpm() {
-	# PHP 5.3 needs drush 5.6 commands.
-	export DRUSH_BASE_PATH="$HOME/drush/vendor/drush/drush"
-
-	(
-		mkdir -p $HOME/drush
-		cd $HOME/drush
-		composer require --no-interaction --prefer-source "drush/drush:6.5"
-	)
-
 	# PHP-FPM
 	export DRUPAL_TI_PHP_FPM_CONF="$TRAVIS_BUILD_DIR/../php-fpm.conf"
 cat <<EOF >"$DRUPAL_TI_PHP_FPM_CONF"
@@ -156,8 +147,6 @@ pm.max_spare_servers = 3
 
 pm.status_path = /php-fpm-status
 ping.path = /php-fpm-ping
-
-php_value[auto_prepend_file] = $DRUSH_BASE_PATH/commands/runserver/runserver-prepend.php
 EOF
 	{ php-fpm -F -y "$DRUPAL_TI_PHP_FPM_CONF" | drupal_ti_log_output "php-fpm"; } &
 }

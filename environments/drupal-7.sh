@@ -5,7 +5,7 @@
 function drupal_ti_install_drupal() {
 	drush --yes dl drupal-7 --drupal-project-rename=drupal
 	cd drupal
-	php -d sendmail_path=$(which true) ~/.composer/vendor/bin/drush.php --yes site-install testing --site-name="Site-Install" --db-url="$DRUPAL_TI_DB_URL"
+	php -d sendmail_path=$(which true) ~/.composer/vendor/bin/drush.php --yes site-install testing --db-url="$DRUPAL_TI_DB_URL"
 }
 
 function drupal_ti_clear_caches() {
