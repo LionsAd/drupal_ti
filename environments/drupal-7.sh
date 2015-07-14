@@ -23,9 +23,9 @@ export PATH="$PATH:$DRUPAL_TI_DIST_DIR/usr/bin"
 # Display used for running selenium browser.
 export DISPLAY=:99.0
 
-# PHP 5.3 and HHVM need Drush 6 to use php-cgi instead.
+# PHP 5.3 needs Drush 6 to use php-cgi instead.
 PHP_VERSION=$(phpenv version-name)
-if [ "$PHP_VERSION" = "5.3" -o "$PHP_VERSION" = "hhvm" ]
+if [ "$PHP_VERSION" = "5.3" ]
 then
 	export DRUPAL_TI_DRUSH_VERSION="drush/drush:6.*"
 fi

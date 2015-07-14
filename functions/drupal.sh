@@ -70,24 +70,19 @@ function drupal_ti_run_server() {
 		return
 	fi
 
-	OPTIONS=()
-
 	# Set PHP CGI explicitly to php-cgi full path.
 	PHP_VERSION=$(phpenv version-name)
 	if [ "$PHP_VERSION" = "5.3" -o "$PHP_VERSION" = "hhvm" ]
 	then
-		PHP5_CGI=$(which php-cgi)
-		OPTIONS=( "${OPTIONS[@]}" --php-cgi="$PHP5_CGI")
+		(
+			mkdir -p $HOME/drush
+			cd $HOME/drush
+			composer require --no-interaction --prefer-source "drush/drush:6.5"
+	       )
 	fi
 
-	(
-		mkdir -p $HOME/drush
-		cd $HOME/drush
-		composer require --no-interaction --prefer-source "drush/drush:6.5"
-       )
-
 	# start a web server on port 8080, run in the background; wait for initialization
-	{ $HOME/drush/vendor/bin/drush runserver "${OPTIONS[@]}" "$DRUPAL_TI_WEBSERVER_URL:$DRUPAL_TI_WEBSERVER_PORT" 2>&1 | drupal_ti_log_output "webserver" ; } &
+	{ drush runserver "${OPTIONS[@]}" "$DRUPAL_TI_WEBSERVER_URL:$DRUPAL_TI_WEBSERVER_PORT" 2>&1 | drupal_ti_log_output "webserver" ; } &
 
 	# Wait until drush server has been started.
 	drupal_ti_wait_for_service_port "$DRUPAL_TI_WEBSERVER_PORT"
