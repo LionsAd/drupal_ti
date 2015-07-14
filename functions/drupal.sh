@@ -78,13 +78,6 @@ function drupal_ti_run_server() {
 	then
 		PHP5_CGI=$(which php-cgi)
 		OPTIONS=( "${OPTIONS[@]}" --php-cgi="$PHP5_CGI")
-
-		(
-			mkdir -p $HOME/drush
-			cd $HOME/drush
-			composer require --no-interaction --prefer-source "drush/drush:6.5"
-	       )
-
 	fi
 
 	# start a web server on port 8080, run in the background; wait for initialization
@@ -100,16 +93,40 @@ function drupal_ti_run_server() {
 # Ensure hhvm runs in daemon mode.
 #
 function drupal_ti_ensure_hhvm_fastcgi() {
-	hhvm --mode daemon -vServer.Type=fastcgi -vServer.FileSocket=/tmp/php-fastcgi.sock -vLog.File=/tmp/hhvm.log
-	{ tail -f /tmp/hhvm.log | drupal_ti_log_output "hhvm-fastcgi"; } &
+	# PHP-FPM
+	export DRUPAL_TI_HHVM_INI="$TRAVIS_BUILD_DIR/../php-hhvm.ini"
+cat <<EOF >"$DRUPAL_TI_HHVM_INI"
+; php options
+
+pid = /tmp/hvvm.pid
+
+; hhvm specific
+
+hhvm.server.port = 9000
+hhvm.server.type = fastcgi
+hhvm.server.default_document = index.php
+hhvm.log.use_log_file = true
+hhvm.log.file = /tmp/hhvm-error.log
+hhvm.repo.central.path = /tmp/hhvm.hhbc
+EOF
+
+	hhvm --config "$DRUPAL_TI_HHVM_INI" --mode daemon
+	sleep 2
+	{ tail -f /tmp/hhvm-error.log | drupal_ti_log_output "hhvm-fastcgi"; } &
 }
 
 #
 # Ensure that PHP FPM runs.
 #
 function drupal_ti_ensure_php_fpm() {
-	# @todo Fix differently.
+	# PHP 5.3 needs drush 5.6 commands.
 	export DRUSH_BASE_PATH="$HOME/drush/vendor/drush/drush"
+
+	(
+		mkdir -p $HOME/drush
+		cd $HOME/drush
+		composer require --no-interaction --prefer-source "drush/drush:6.5"
+	)
 
 	# PHP-FPM
 	export DRUPAL_TI_PHP_FPM_CONF="$TRAVIS_BUILD_DIR/../php-fpm.conf"
@@ -120,7 +137,7 @@ error_log = /tmp/fpm-php.log
 user = travis
 group = travis
 
-listen = /tmp/php-fastcgi.sock
+listen = 9000
 listen.owner = travis
 listen.group = travis
 listen.mode = 0666
@@ -173,7 +190,7 @@ function drupal_ti_ensure_php_for_drush_webserver() {
 
 export DOCUMENT_ROOT="$DRUPAL_TI_DRUPAL_DIR"
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$DRUPAL_TI_DIST_DIR/usr/lib"
-$DRUPAL_TI_DIST_DIR/usr/bin/cgi-fcgi -bind -connect /tmp/php-fastcgi.sock
+$DRUPAL_TI_DIST_DIR/usr/bin/cgi-fcgi -bind -connect :9000
 EOF
         chmod a+x $DRUPAL_TI_DIST_DIR/usr/bin/php-cgi
 	touch "$TRAVIS_BUILD_DIR/../drupal_ti-php-for-webserver-installed"
