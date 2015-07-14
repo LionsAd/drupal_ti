@@ -171,7 +171,6 @@ function drupal_ti_ensure_php_for_drush_webserver() {
 	fi
 	if [ "$PHP_VERSION" = "hhvm" ]
 	then
-		echo "HVVM setup ..."
 		drupal_ti_ensure_hhvm_fastcgi
 	else
 		drupal_ti_ensure_php_fpm
