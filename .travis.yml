@@ -51,8 +51,8 @@ matrix:
   # Exclude single jobs from HHVM as well.
   #  - php: hhvm
   #    env: DRUPAL_TI_RUNNERS="phpunit" DRUPAL_TI_ENVIRONMENT="drupal-7"
-    - php: hhvm
-      env: DRUPAL_TI_RUNNERS="simpletest" DRUPAL_TI_ENVIRONMENT="drupal-7"
+#    - php: hhvm
+#      env: DRUPAL_TI_RUNNERS="simpletest" DRUPAL_TI_ENVIRONMENT="drupal-7"
     - php: hhvm
       env: DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
 
