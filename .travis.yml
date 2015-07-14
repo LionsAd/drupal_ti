@@ -47,18 +47,18 @@ matrix:
       env: DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
 
     - php: 5.6
-      env: DRUPAL_TI_RUNNERS="phpunit" drupal_ti_environment="drupal-7"
+      env: DRUPAL_TI_RUNNERS="phpunit" DRUPAL_TI_ENVIRONMENT="drupal-7"
     - php: 5.6
-      env: DRUPAL_TI_RUNNERS="simpletest" drupal_ti_environment="drupal-7"
+      env: DRUPAL_TI_RUNNERS="simpletest" DRUPAL_TI_ENVIRONMENT="drupal-7"
     - php: 5.6
-      env: DRUPAL_TI_RUNNERS="behat" drupal_ti_environment="drupal-7"
+      env: DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
 
     - php: 7
-      env: DRUPAL_TI_RUNNERS="phpunit" drupal_ti_environment="drupal-7"
+      env: DRUPAL_TI_RUNNERS="phpunit" DRUPAL_TI_ENVIRONMENT="drupal-7"
     - php: 7
-      env: DRUPAL_TI_RUNNERS="simpletest" drupal_ti_environment="drupal-7"
+      env: DRUPAL_TI_RUNNERS="simpletest" DRUPAL_TI_ENVIRONMENT="drupal-7"
     - php: 7
-      env: DRUPAL_TI_RUNNERS="behat" drupal_ti_environment="drupal-7"
+      env: DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
 
   # Exclude single jobs from HHVM as well.
     - php: hhvm
