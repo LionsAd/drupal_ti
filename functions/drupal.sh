@@ -112,7 +112,7 @@ EOF
 
 	hhvm --config "$DRUPAL_TI_HHVM_INI" --mode daemon
 	sleep 2
-	{ tail -f /tmp/hhvm-error.log | drupal_ti_log_output "hhvm-fastcgi"; } &
+	{ tail -f /tmp/hhvm-error.log | drupal_ti_log_output "hhvm"; } &
 }
 
 #
