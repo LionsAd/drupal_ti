@@ -86,6 +86,12 @@ function drupal_ti_run_server() {
 	# Wait until drush server has been started.
 	drupal_ti_wait_for_service_port "$DRUPAL_TI_WEBSERVER_PORT"
 	touch "$TRAVIS_BUILD_DIR/../drupal_ti-drush-server-running"
+
+	if [ "$PHP_VERSION" = "5.3" -o "$PHP_VERSION" = "hhvm" ]
+	then
+		curl -I "$DRUPAL_TI_WEBSERVER_URL:$DRUPAL_TI_WEBSERVER_PORT/"
+		curl "$DRUPAL_TI_WEBSERVER_URL:$DRUPAL_TI_WEBSERVER_PORT/"
+	fi
 }
 
 #
