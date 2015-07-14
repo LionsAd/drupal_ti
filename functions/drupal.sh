@@ -70,8 +70,6 @@ function drupal_ti_run_server() {
 		return
 	fi
 
-	OPTIONS=()
-
 	# Use hhvm_serve for PHP 5.3 fcgi and hhvm fcgi
 	PHP_VERSION=$(phpenv version-name)
 	if [ "$PHP_VERSION" = "5.3" -o "$PHP_VERSION" = "hhvm" ]
@@ -80,7 +78,8 @@ function drupal_ti_run_server() {
 		export DRUPAL_TI_WEBSERVER_HOST=$(echo "$DRUPAL_TI_WEBSERVER_URL" | sed 's,http://,,')
 		{ "$GOPATH/bin/hhvm-serve" -listen="$DRUPAL_TI_WEBSERVER_HOST:$DRUPAL_TI_WEBSERVER_PORT" 2>&1 | drupal_ti_log_output "webserver" ; } &
 	else
-		{ drush runserver "${OPTIONS[@]}" "$DRUPAL_TI_WEBSERVER_URL:$DRUPAL_TI_WEBSERVER_PORT" 2>&1 | drupal_ti_log_output "webserver" ; } &
+		# start a web server on port 8080, run in the background; wait for initialization
+		{ drush runserver "$DRUPAL_TI_WEBSERVER_URL:$DRUPAL_TI_WEBSERVER_PORT" 2>&1 | drupal_ti_log_output "webserver" ; } &
 	fi
 
 	# Wait until drush server has been started.
