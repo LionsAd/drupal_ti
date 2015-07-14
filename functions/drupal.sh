@@ -72,17 +72,15 @@ function drupal_ti_run_server() {
 
 	OPTIONS=()
 
-	# Set PHP CGI explicitly to php-cgi full path.
+	# Use hhvm_serve for PHP 5.3 fcgi and hhvm fcgi
 	PHP_VERSION=$(phpenv version-name)
 	if [ "$PHP_VERSION" = "5.3" -o "$PHP_VERSION" = "hhvm" ]
 	then
-		PHP5_CGI=$(which php-cgi)
-		OPTIONS=( "${OPTIONS[@]}" --php-cgi="$PHP5_CGI")
+		export GOPATH="$DRUPAL_TI_DIST_DIR/go"
+		{ "$GOPATH/bin/hhvm-serve" -listen="$DRUPAL_TI_WEBSERVER_URL:$DRUPAL_TI_WEBSERVER_PORT" 2>&1 | drupal_ti_log_output "webserver" ; } &
+	else
+		{ drush runserver "${OPTIONS[@]}" "$DRUPAL_TI_WEBSERVER_URL:$DRUPAL_TI_WEBSERVER_PORT" 2>&1 | drupal_ti_log_output "webserver" ; } &
 	fi
-
-	# start a web server on port 8080, run in the background; wait for initialization
-	echo drush runserver "${OPTIONS[@]}" "$DRUPAL_TI_WEBSERVER_URL:$DRUPAL_TI_WEBSERVER_PORT"
-	{ drush runserver "${OPTIONS[@]}" "$DRUPAL_TI_WEBSERVER_URL:$DRUPAL_TI_WEBSERVER_PORT" 2>&1 | drupal_ti_log_output "webserver" ; } &
 
 	# Wait until drush server has been started.
 	drupal_ti_wait_for_service_port "$DRUPAL_TI_WEBSERVER_PORT"
@@ -157,6 +155,14 @@ EOF
 	{ php-fpm -F -y "$DRUPAL_TI_PHP_FPM_CONF" | drupal_ti_log_output "php-fpm"; } &
 }
 
+#
+# Ensure that hhvm_serve is installed
+#
+function drupal_ti_ensure_hhvm_serve() {
+	export GOPATH="$DRUPAL_TI_DIST_DIR/go"
+	mkdir -p "$GOPATH"
+	go get github.com/beberlei/hhvm-serve
+}
 
 #
 # Ensures a drush webserver can be started for PHP 5.3.
@@ -182,17 +188,7 @@ function drupal_ti_ensure_php_for_drush_webserver() {
 		drupal_ti_ensure_php_fpm
 	fi
 
-	drupal_ti_apt_get update >/dev/null 2>&1
-	drupal_ti_apt_get install libfcgi0ldbl
-
-        cat <<EOF >$DRUPAL_TI_DIST_DIR/usr/bin/php-cgi
-#!/bin/bash
-
-export DOCUMENT_ROOT="$DRUPAL_TI_DRUPAL_DIR"
-export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$DRUPAL_TI_DIST_DIR/usr/lib"
-$DRUPAL_TI_DIST_DIR/usr/bin/cgi-fcgi -bind -connect :9000
-EOF
-        chmod a+x $DRUPAL_TI_DIST_DIR/usr/bin/php-cgi
+	drupal_ti_ensure_hhvm_serve
 	touch "$TRAVIS_BUILD_DIR/../drupal_ti-php-for-webserver-installed"
 }
 
