@@ -178,10 +178,17 @@ function drupal_ti_wait_for_service_port() {
 	PORT=$1
 	shift
 
+	COUNT=0
 	# Try to connect to the port via netcat.
 	# netstat is not available on the container builds.
 	until nc -w 1 localhost "$PORT"
 	do
 		sleep 1
+		COUNT=$[COUNT+1]
+		if [ $COUNT -gt 10 ]
+		then
+			echo "Error: Timeout while waiting for webserver." 1>&2
+			exit 1
+		fi
 	done
 }
