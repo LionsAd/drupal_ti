@@ -13,12 +13,12 @@ language: php
 sudo: false
 
 php:
-  - 5.3
-  - 5.4
+#  - 5.3
+#  - 5.4
   - 5.5
-  - 5.6
-  - 7
-  - hhvm
+#  - 5.6
+#  - 7
+#  - hhvm
 
 matrix:
   fast_finish: true
@@ -111,12 +111,13 @@ env:
 
   matrix:
     # Ensure that runners work isolated.
-    - DRUPAL_TI_RUNNERS="phpunit" DRUPAL_TI_ENVIRONMENT="drupal-7"
+#    - DRUPAL_TI_RUNNERS="phpunit" DRUPAL_TI_ENVIRONMENT="drupal-7"
     - DRUPAL_TI_RUNNERS="simpletest" DRUPAL_TI_ENVIRONMENT="drupal-7"
-    - DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
+    - DRUPAL_TI_RUNNERS="simpletest" DRUPAL_TI_ENVIRONMENT="drupal-8"
+#    - DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
     # And in combination.
-    - DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
-    - DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8"
+#    - DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
+#    - DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8"
 
 mysql:
   database: drupal_travis_db
