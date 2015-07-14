@@ -66,8 +66,11 @@ function drupal_ti_ensure_phantomjs() {
 #
 function drupal_ti_ensure_bin_dir() {
         # Create bin dir
+	(
+		cd "$TRAVIS_BUILD_DIR/.."
+		mkdir -p "drupal_travis/bin"
+	)
         export DRUPAL_TI_BIN_DIR=$(cd "$TRAVIS_BUILD_DIR/../drupal_travis/bin"; pwd)
-        mkdir -p "$DRUPAL_TI_BIN_DIR"
         export PATH="$DRUPAL_TI_BIN_DIR:$PATH"
 }
 
