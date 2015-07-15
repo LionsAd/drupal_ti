@@ -19,7 +19,8 @@ then
 		IFS='|'
 		for SUBDIR in $DIRS_TO_SYNC
 		do
-                	rsync -a "$SOURCE/$SUBDIR" "$DRUPAL_TI_CACHE_DIR/$DIR/"
+			mkdir -p "$DRUPAL_TI_CACHE_DIR/$DIR/$SUBDIR/"
+                	rsync -a "$SOURCE/$SUBDIR" "$DRUPAL_TI_CACHE_DIR/$DIR/$SUBDIR/"
 		done
 		unset IFS
 	done
