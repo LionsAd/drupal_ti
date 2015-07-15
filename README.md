@@ -80,10 +80,6 @@ Example:
 - DRUPAL_TI_SCRIPT_DIR_AFTER="./drupal_ti/after  ./vendor/lionsad/drupal_ti_base_cool/drupal_ti/after"
 ````
 
-### Roadmap
-
-- Support behat running with phantomjs. (Firefox browser is already supported)
-
 Contributions are welcome.
 
 ### Status
