@@ -33,6 +33,11 @@ class DrupalTiTestTest extends WebTestBase {
     //$this->assertEqual('foo', 'bar', 'This test will fail.');
     $this->drupalGet('<front>');
     $this->assertResponse(200, 'Front page exists.');
+    $this->assertRaw('Site-Install');
+
+    // Test that login works.
+    $admin_user = $this->drupalCreateUser(array('access content'));
+    $this->drupalLogin($admin_user);
   }
 }
 

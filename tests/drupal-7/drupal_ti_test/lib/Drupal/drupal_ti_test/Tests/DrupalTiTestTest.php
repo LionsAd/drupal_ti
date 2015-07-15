@@ -43,6 +43,11 @@ class DrupalTiTestTest extends \DrupalWebTestCase {
 
     $this->drupalGet('<front>');
     $this->assertResponse(200, 'Front page exists.');
+    $this->assertRaw('Site-Install');
+
+    // Test that login works.
+    $admin_user = $this->drupalCreateUser(array('access content'));
+    $this->drupalLogin($admin_user);
   }
 }
 
