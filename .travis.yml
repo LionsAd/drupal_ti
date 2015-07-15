@@ -122,6 +122,8 @@ env:
     # Set to 0 or comment out to disable cache loading.
     - DRUPAL_TI_LOAD_CACHE="1"
     # Set to 0 to disable cache saving, useful with many variants.
+    # Note: Setting this to "0" will remove the .casher directory to
+    #       avoid race conditions between builds.
     - DRUPAL_TI_SAVE_CACHE="1"
     # Setup dirs to cache relative to another environment variable.
     - DRUPAL_TI_CACHE_DIRS_HOME=".composer|.drush|.dist"
