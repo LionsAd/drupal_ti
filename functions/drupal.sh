@@ -152,7 +152,7 @@ EOF
 function drupal_ti_ensure_hhvm_serve() {
 	export GOPATH="$DRUPAL_TI_DIST_DIR/go"
 	mkdir -p "$GOPATH"
-	go get github.com/beberlei/hhvm-serve
+	go get -v -u github.com/LionsAd/hhvm-serve
 }
 
 #
