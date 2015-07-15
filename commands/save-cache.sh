@@ -4,7 +4,9 @@ set +e
 
 if [ "$DRUPAL_TI_SAVE_CACHE" = "1" ]
 then
-	mv "$DRUPAL_TI_CACHE_DIR" "$DRUPAL_TI_CACHE_DIR.old"
+	mkdir -p "$DRUPAL_TI_CACHE_DIR"
+	DRUPAL_TI_CACHE_DIR_CLEAN=$(cd $DRUPAL_TI_CACHE_DIR; pwd)
+	mv "$DRUPAL_TI_CACHE_DIR_CLEAN" "$DRUPAL_TI_CACHE_DIR_CLEAN.old"
 
 	# Sync over specified directories.
         while [ $# -gt 0 ]
@@ -19,8 +21,11 @@ then
 		IFS='|'
 		for SUBDIR in $DIRS_TO_SYNC
 		do
-			mkdir -p "$DRUPAL_TI_CACHE_DIR/$DIR/$SUBDIR/"
-                	rsync -a "$SOURCE/$SUBDIR" "$DRUPAL_TI_CACHE_DIR/$DIR/$SUBDIR/"
+			if [ -d "$SOURCE/$SUBDIR" ]
+			then
+				mkdir -p "$DRUPAL_TI_CACHE_DIR/$DIR/$SUBDIR/"
+				rsync -a "$SOURCE/$SUBDIR" $(dirname "$DRUPAL_TI_CACHE_DIR/$DIR/$SUBDIR/")
+			fi
 		done
 		unset IFS
 	done

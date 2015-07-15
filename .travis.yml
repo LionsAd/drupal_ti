@@ -186,7 +186,6 @@ script:
   - rm -f "$DRUPAL_TI_CACHE_DIR"/TRAVIS_BUILD_DIR/tests/behat/.composer/vendor/composer/*.php
   - rm -f "$DRUPAL_TI_CACHE_DIR"/TRAVIS_BUILD_DIR/tests/behat/.composer/vendor/autoload.php
 
-  # Detect differences and touch a file in that case.
   # Tests for differences and touches a file if any are detected (optional).
   - du -sh "$DRUPAL_TI_CACHE_DIR"
   - drupal-ti --sync-cache
