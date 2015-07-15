@@ -15,7 +15,7 @@ then
 
 	# Use rsync comparison as its very fast.
 	touch /tmp/drupal-ti-cache.txt
-	rsync --delete -aincO "$DRUPAL_TI_CACHE_DIR_CLEAN" "$DRUPAL_TI_CACHE_DIR_CLEAN.old/" | egrep -v '^\.' | tee /tmp/drupal-ti-cache.txt
+	rsync --delete -aincO "$DRUPAL_TI_CACHE_DIR_CLEAN/" "$DRUPAL_TI_CACHE_DIR_CLEAN.old/" | egrep -v '^\.' | tee /tmp/drupal-ti-cache.txt
 	RC="1"
 	egrep -q '^' /tmp/drupal-ti-cache.txt || RC=""
 
