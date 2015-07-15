@@ -2,7 +2,7 @@
 
 set +e
 
-if [ -n "$DRUPAL_TI_LOAD_CACHE" ]
+if [ "$DRUPAL_TI_LOAD_CACHE" = "1" ]
 then
 	while [ $# -gt 0 ]
 	do
