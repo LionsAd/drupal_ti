@@ -13,6 +13,9 @@ then
 	echo "- cmd: A valid travis-ci command, e.g. before-script, script, after-script." 1>&2
 	echo "" 1>&2
 	echo "       Use --include to include an arbitrary script within the drupal_ti environment." 1>&2
+	echo "       Use --load-cache to load caches." 1>&2
+	echo "       Use --save-cache to save caches." 1>&2
+	echo "       Use --sync-cache to check cache for differences via rsync." 1>&2
 	echo "" 1>&2
 	exit 1
 fi
@@ -47,12 +50,20 @@ fi
 # Include the environment specific variables.
 export DRUPAL_TI_SCRIPT_DIRS="$DRUPAL_TI_SCRIPT_DIR_BEFORE $DRUPAL_TI_SCRIPT_DIR $DRUPAL_TI_SCRIPT_DIR_AFTER"
 
-# In case the special '--include' flag was given, just include the given command with vars set.
-if [ "$CMD" = '--include' ]
+# In case a '--' command was given, just include the given command with vars set.
+if [[ "$CMD" == '--'* ]]
 then
+	CMD=${CMD/--/}
 	shift
-	SCRIPT="$1"
-	"$DRUPAL_TI_SCRIPT_DIR/utility/include-script.sh" "$SCRIPT"
+	for SCRIPT_DIR in $DRUPAL_TI_SCRIPT_DIRS
+	do
+		SCRIPT="$SCRIPT_DIR/commands/$CMD.sh"
+		if [ -x "$SCRIPT" ]
+		then
+			# Loads the environment, then includes the script.
+			"$DRUPAL_TI_SCRIPT_DIR/utility/include-script.sh" "$SCRIPT" "$@"
+		fi
+	done
 	exit 0
 fi
 
