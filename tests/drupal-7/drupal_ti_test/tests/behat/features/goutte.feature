@@ -7,3 +7,8 @@ Feature: Test DrupalContext
     Given I am on the homepage
     When I click "Site-Install"
     Then I should see "Welcome to Site-Install"
+
+  Scenario: Error messages
+   Given I am on "/user"
+   When I press "Log in"
+   Then I should see "Password field is required"
