@@ -13,12 +13,12 @@ language: php
 sudo: false
 
 php:
-#  - 5.3
-#  - 5.4
+  - 5.3
+  - 5.4
   - 5.5
   - 5.6
   - 7
-#  - hhvm
+  - hhvm
 
 branches:
   only:
@@ -36,27 +36,26 @@ matrix:
   exclude:
   # Drupal-8 does not work on PHP 5.3 or PHP 5.4.
     - php: 5.3
-      env: DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8"
+      env: DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8" DRUPAL_TI_SAVE_CACHE="0"
     - php: 5.4
-      env: DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8"
+      env: DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8" DRUPAL_TI_SAVE_CACHE="0"
   include:
-#    # Test single runners on PHP 5.4.
-#    - php: 5.4
-#      env: DRUPAL_TI_RUNNERS="phpunit" DRUPAL_TI_ENVIRONMENT="drupal-7" DRUPAL_TI_SAVE_CACHE="0"
-#    - php: 5.4
-#      env: DRUPAL_TI_RUNNERS="simpletest" DRUPAL_TI_ENVIRONMENT="drupal-7" DRUPAL_TI_SAVE_CACHE="0"
-#    - php: 5.4
-#      env: DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7" DRUPAL_TI_SAVE_CACHE="0"
-#    # Test selenium and firefox / chrome browsers.
-#    - php: 5.4
-#      env: DRUPAL_TI_BEHAT_DRIVER="selenium" DRUPAL_TI_BEHAT_BROWSER="firefox" DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7" DRUPAL_TI_SAVE_CACHE="0"
-#    - php: 5.4
-#      env: DRUPAL_TI_BEHAT_DRIVER="selenium" DRUPAL_TI_BEHAT_BROWSER="chrome" DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7" DRUPAL_TI_SAVE_CACHE="0"
-#    # Test working hhvm tests.
-#    - php: hhvm
-#      env: DRUPAL_TI_RUNNERS="phpunit behat" DRUPAL_TI_ENVIRONMENT="drupal-8" DRUPAL_TI_SAVE_CACHE="0"
+    # Test single runners on PHP 5.4.
+    - php: 5.4
+      env: DRUPAL_TI_RUNNERS="phpunit" DRUPAL_TI_ENVIRONMENT="drupal-7" DRUPAL_TI_SAVE_CACHE="0"
+    - php: 5.4
+      env: DRUPAL_TI_RUNNERS="simpletest" DRUPAL_TI_ENVIRONMENT="drupal-7" DRUPAL_TI_SAVE_CACHE="0"
+    - php: 5.4
+      env: DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7" DRUPAL_TI_SAVE_CACHE="0"
+    # Test selenium and firefox / chrome browsers.
+    - php: 5.4
+      env: DRUPAL_TI_BEHAT_DRIVER="selenium" DRUPAL_TI_BEHAT_BROWSER="firefox" DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7" DRUPAL_TI_SAVE_CACHE="0"
+    - php: 5.4
+      env: DRUPAL_TI_BEHAT_DRIVER="selenium" DRUPAL_TI_BEHAT_BROWSER="chrome" DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7" DRUPAL_TI_SAVE_CACHE="0"
+    # Test working hhvm tests.
+    - php: hhvm
+      env: DRUPAL_TI_RUNNERS="phpunit behat" DRUPAL_TI_ENVIRONMENT="drupal-8" DRUPAL_TI_SAVE_CACHE="0"
 
-#
 env:
   global:
     # add composer's global bin directory to the path
@@ -118,9 +117,13 @@ env:
     - DRUPAL_TI_DEBUG_FILE_OUTPUT="selenium xvfb webserver hhvm"
 
     # Cache options
+    # Use this variable to use another cache directory, usually not needed to be changed.
     - DRUPAL_TI_CACHE_DIR="$HOME/drupal-ti-cache/"
+    # Set to 0 or comment out to disable cache loading.
     - DRUPAL_TI_LOAD_CACHE="1"
+    # Set to 0 to disable cache saving, useful with many variants.
     - DRUPAL_TI_SAVE_CACHE="1"
+    # Setup dirs to cache relative to another environment variable.
     - DRUPAL_TI_CACHE_DIRS_HOME=".composer|.drush|.dist"
     - DRUPAL_TI_CACHE_DIRS_TRAVIS_BUILD_DIR="tests/vendor|tests/behat/vendor"
 

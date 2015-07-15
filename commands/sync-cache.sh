@@ -16,10 +16,12 @@ then
 	# Use rsync comparison as its very fast.
 	touch /tmp/drupal-ti-cache.txt
 	rsync --delete -aincO "$DRUPAL_TI_CACHE_DIR_CLEAN/" "$DRUPAL_TI_CACHE_DIR_CLEAN.old/" | egrep -v '^\.' | tee /tmp/drupal-ti-cache.txt
-	RC="1"
-	egrep -q '^' /tmp/drupal-ti-cache.txt || RC=""
-
-	# Touch a file if there are differences.
-	test -z "$RC" || touch "$DRUPAL_TI_CACHE_DIR_CLEAN/x-drupal-ti-cache"
+	if egrep -q '^' /tmp/drupal-ti-cache.txt
+	then
+		echo "Differences detected."
+		touch "$DRUPAL_TI_CACHE_DIR_CLEAN/x-drupal-ti-cache"
+	else
+		mv "$DRUPAL_TI_CACHE_DIR_CLEAN" "$DRUPAL_TI_CACHE_DIR_CLEAN.do-not-sync"
+	fi
 fi
 exit 0
