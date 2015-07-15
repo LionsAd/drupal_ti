@@ -13,12 +13,21 @@ language: php
 sudo: false
 
 php:
-  - 5.3
-  - 5.4
+#  - 5.3
+#  - 5.4
   - 5.5
   - 5.6
-  - 7
-  - hhvm
+#  - 7
+#  - hhvm
+
+branches:
+  only:
+    - "master"
+
+cache:
+  apt: true
+  directories:
+    - $HOME/drupal-ti-cache
 
 matrix:
   fast_finish: true
@@ -107,14 +116,18 @@ env:
     # etc. to only output those channels.
     - DRUPAL_TI_DEBUG_FILE_OUTPUT="selenium xvfb webserver hhvm"
 
+    - DRUPAL_TI_CACHE_DIR="$HOME/drupal-ti-cache/"
+    - DRUPAL_TI_LOAD_CACHE="1"
+    - DRUPAL_TI_SAVE_CACHE="0"
+
   matrix:
     # Ensure that runners work isolated.
     #- DRUPAL_TI_RUNNERS="phpunit" DRUPAL_TI_ENVIRONMENT="drupal-7"
     #- DRUPAL_TI_RUNNERS="simpletest" DRUPAL_TI_ENVIRONMENT="drupal-7"
     #- DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
     # And in combination.
-    - DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
-    - DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8"
+    - DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-7" DRUPAL_TI_SAVE_CACHE="1"
+    - DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8" DRUPAL_TI_SAVE_CACHE="1"
 
 mysql:
   database: drupal_travis_db
@@ -122,10 +135,14 @@ mysql:
   encoding: utf8
 
 before_install:
+  # Restore home directory from cache.
+  - mkdir -p $HOME/drupal-ti-cache/home
+  - test -n "$DRUPAL_TI_LOAD_CACHE" && rsync -a "$HOME/drupal-ti-cache/home/" "$HOME/"
+
   - composer self-update
   #  - composer global require LionsAd/drupal_ti:dev-master
   - mkdir -p "$HOME/.composer/vendor/bin"
-  - ln -s $(pwd)/drupal-ti "$HOME/.composer/vendor/bin"
+  - ln -sf $(pwd)/drupal-ti "$HOME/.composer/vendor/bin"
   - cd "./tests/$DRUPAL_TI_ENVIRONMENT/drupal_ti_test"
   # Save the root dir for the tests runner.
   - export DRUPAL_TI_TESTS_DIR="$TRAVIS_BUILD_DIR"
@@ -133,6 +150,11 @@ before_install:
 
   # Now we are setup like the things we want to test.
   - cd ./tests
+
+  # Restore caches, @todo make simpler.
+  - mkdir -p $HOME/drupal-ti-cache/root
+  - test -n "$DRUPAL_TI_LOAD_CACHE" && rsync -a "$HOME/drupal-ti-cache/root/" .
+
   - drupal-ti before_install
 
 install:
@@ -144,6 +166,52 @@ before_script:
 
 script:
   - drupal-ti script
+  # Save caches @todo make simpler.
+  - mv $HOME/drupal-ti-cache $HOME/drupal-ti-cache.old
+  - rm -f $HOME/drupal-ti-cache.old/x-drupal-ti-cache
+
+  - mkdir -p $HOME/drupal-ti-cache/home
+  - rsync -a $HOME/.composer $HOME/drupal-ti-cache/home/
+
+  # Ignore old backups.
+  - rm -f $HOME/drupal-ti-cache/home/.composer/*.phar
+  - rm -f $HOME/drupal-ti-cache/home/.composer/vendor/composer/*.php
+  - rm -f $HOME/drupal-ti-cache/home/.composer/vendor/autoload.php
+
+  - mkdir -p $HOME/.drush
+  - rsync -a $HOME/.drush $HOME/drupal-ti-cache/home/
+
+  # Ignore always changing cache files.
+  - rm -f $HOME/drupal-ti-cache/home/.drush/cache/default/6.5.0-*.cache
+  - rm -f $HOME/drupal-ti-cache/home/.drush/cache/default/7.0-dev-*.cache
+
+  # Backup .dist files (from apt-get), too.
+  - mkdir -p $HOME/.dist
+  - rsync -a $HOME/.dist $HOME/drupal-ti-cache/home/
+
+  - mkdir -p $HOME/drupal-ti-cache/root
+  - rsync -a composer.{json,lock} $HOME/drupal-ti-cache/root/
+
+  - mkdir -p vendor
+  - rsync -a vendor $HOME/drupal-ti-cache/root/
+  # Delete composer generated files that screw up cache detection.
+  - rm -f $HOME/drupal-ti-cache/root/vendor/composer/*.php
+  - rm -f $HOME/drupal-ti-cache/root/vendor/autoload.php
+
+  - mkdir -p behat/vendor
+  - mkdir -p $HOME/drupal-ti-cache/root/behat
+  - rsync -a behat/vendor $HOME/drupal-ti-cache/root/behat/
+  # Delete composer generated files that screw up cache detection.
+  - rm -f $HOME/drupal-ti-cache/root/behat/vendor/composer/*.php
+  - rm -f $HOME/drupal-ti-cache/root/behat/vendor/autoload.php
+
+  # Detect differences and touch a file in that case.
+  - touch /tmp/drupal-ti-cache.txt
+  - test -z "$DRUPAL_TI_STORE_CACHE" || rsync --delete -aincO $HOME/drupal-ti-cache/ $HOME/drupal-ti-cache.old/ | egrep -v '^\.' | tee /tmp/drupal-ti-cache.txt
+  - RC="1"
+  - egrep -q '^' /tmp/drupal-ti-cache.txt || RC=""
+  - test -z "$RC" || touch $HOME/drupal-ti-cache/x-drupal-ti-cache
+  - du -sh $HOME/drupal-ti-cache
 
 after_script:
   - drupal-ti after_script
