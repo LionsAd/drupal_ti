@@ -20,6 +20,9 @@ then
 	then
 		echo "Differences detected."
 		touch "$DRUPAL_TI_CACHE_DIR_CLEAN/x-drupal-ti-cache"
+	else
+		# Delete the .casher directory to force that no caches will be updated.
+	        rm -rf $HOME/.casher
 	fi
 else
 	# Delete the .casher directory to force that no caches will be updated.
