@@ -20,6 +20,15 @@ php:
   - 7
   - hhvm
 
+branches:
+  only:
+    - "master"
+
+cache:
+  apt: true
+  directories:
+    - $HOME/drupal-ti-cache
+
 matrix:
   fast_finish: true
   allow_failures:
@@ -27,25 +36,25 @@ matrix:
   exclude:
   # Drupal-8 does not work on PHP 5.3 or PHP 5.4.
     - php: 5.3
-      env: DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8"
+      env: DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8" DRUPAL_TI_SAVE_CACHE="0"
     - php: 5.4
-      env: DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8"
+      env: DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8" DRUPAL_TI_SAVE_CACHE="0"
   include:
     # Test single runners on PHP 5.4.
     - php: 5.4
-      env: DRUPAL_TI_RUNNERS="phpunit" DRUPAL_TI_ENVIRONMENT="drupal-7"
+      env: DRUPAL_TI_RUNNERS="phpunit" DRUPAL_TI_ENVIRONMENT="drupal-7" DRUPAL_TI_SAVE_CACHE="0"
     - php: 5.4
-      env: DRUPAL_TI_RUNNERS="simpletest" DRUPAL_TI_ENVIRONMENT="drupal-7"
+      env: DRUPAL_TI_RUNNERS="simpletest" DRUPAL_TI_ENVIRONMENT="drupal-7" DRUPAL_TI_SAVE_CACHE="0"
     - php: 5.4
-      env: DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
+      env: DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7" DRUPAL_TI_SAVE_CACHE="0"
     # Test selenium and firefox / chrome browsers.
     - php: 5.4
-      env: DRUPAL_TI_BEHAT_DRIVER="selenium" DRUPAL_TI_BEHAT_BROWSER="firefox" DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
+      env: DRUPAL_TI_BEHAT_DRIVER="selenium" DRUPAL_TI_BEHAT_BROWSER="firefox" DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7" DRUPAL_TI_SAVE_CACHE="0"
     - php: 5.4
-      env: DRUPAL_TI_BEHAT_DRIVER="selenium" DRUPAL_TI_BEHAT_BROWSER="chrome" DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
+      env: DRUPAL_TI_BEHAT_DRIVER="selenium" DRUPAL_TI_BEHAT_BROWSER="chrome" DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7" DRUPAL_TI_SAVE_CACHE="0"
     # Test working hhvm tests.
     - php: hhvm
-      env: DRUPAL_TI_RUNNERS="phpunit behat" DRUPAL_TI_ENVIRONMENT="drupal-8"
+      env: DRUPAL_TI_RUNNERS="phpunit behat" DRUPAL_TI_ENVIRONMENT="drupal-8" DRUPAL_TI_SAVE_CACHE="0"
 
 env:
   global:
@@ -107,6 +116,19 @@ env:
     # etc. to only output those channels.
     - DRUPAL_TI_DEBUG_FILE_OUTPUT="selenium xvfb webserver hhvm"
 
+    # Cache options
+    # Use this variable to use another cache directory, usually not needed to be changed.
+    - DRUPAL_TI_CACHE_DIR="$HOME/drupal-ti-cache/"
+    # Set to 0 or comment out to disable cache loading.
+    - DRUPAL_TI_LOAD_CACHE="1"
+    # Set to 0 to disable cache saving, useful with many variants.
+    # Note: Setting this to "0" will remove the .casher directory to
+    #       avoid race conditions between builds.
+    - DRUPAL_TI_SAVE_CACHE="1"
+    # Setup dirs to cache relative to another environment variable.
+    - DRUPAL_TI_CACHE_DIRS_HOME=".composer|.drush|.dist"
+    - DRUPAL_TI_CACHE_DIRS_TRAVIS_BUILD_DIR="tests/vendor|tests/behat/vendor"
+
   matrix:
     # Ensure that runners work isolated.
     #- DRUPAL_TI_RUNNERS="phpunit" DRUPAL_TI_ENVIRONMENT="drupal-7"
@@ -114,7 +136,7 @@ env:
     #- DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
     # And in combination.
     - DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
-    - DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8"
+    - DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8" DRUPAL_TI_SAVE_CACHE="0"
 
 mysql:
   database: drupal_travis_db
@@ -122,10 +144,15 @@ mysql:
   encoding: utf8
 
 before_install:
+  # Restore home directory from cache.
+  - mkdir -p "$DRUPAL_TI_CACHE_DIR"/HOME
+  - if [ "$DRUPAL_TI_LOAD_CACHE" = "1" ]; then rsync -a "$DRUPAL_TI_CACHE_DIR"/HOME/ "$HOME/"; fi
+
+  # Update composer.
   - composer self-update
   #  - composer global require LionsAd/drupal_ti:dev-master
   - mkdir -p "$HOME/.composer/vendor/bin"
-  - ln -s $(pwd)/drupal-ti "$HOME/.composer/vendor/bin"
+  - ln -sf $(pwd)/drupal-ti "$HOME/.composer/vendor/bin"
   - cd "./tests/$DRUPAL_TI_ENVIRONMENT/drupal_ti_test"
   # Save the root dir for the tests runner.
   - export DRUPAL_TI_TESTS_DIR="$TRAVIS_BUILD_DIR"
@@ -133,6 +160,10 @@ before_install:
 
   # Now we are setup like the things we want to test.
   - cd ./tests
+
+  # Restore caches from $DRUPAL_TI_CACHE_DIR/TRAVIS_BUILD_DIR to $TRAVIS_BUILD_DIR
+  # Note: HOME dir was already synced manually above.
+  - drupal-ti --load-cache TRAVIS_BUILD_DIR
   - drupal-ti before_install
 
 install:
@@ -144,6 +175,24 @@ before_script:
 
 script:
   - drupal-ti script
+  # Syncs $DRUPAL_TI_CACHE_DIRS_{*} to $DRUPAL_TI_CACHE_DIR/{*}
+  # Has internal optimizations for .composer and .drush.
+  - drupal-ti --save-cache TRAVIS_BUILD_DIR HOME
+
+  # Do some manual caching as well
+  - if [ "$DRUPAL_TI_SAVE_CACHE" = "1" ]; then rsync -a composer.{json,lock} "$DRUPAL_TI_CACHE_DIR"/TRAVIS_BUILD_DIR/tests/; fi
+
+  # Delete composer generated files that screw up cache detection.
+  - rm -f "$DRUPAL_TI_CACHE_DIR"/TRAVIS_BUILD_DIR/tests/.composer/vendor/composer/*.php
+  - rm -f "$DRUPAL_TI_CACHE_DIR"/TRAVIS_BUILD_DIR/tests/.composer/vendor/autoload.php
+
+  # Delete composer generated behat files that screw up cache detection.
+  - rm -f "$DRUPAL_TI_CACHE_DIR"/TRAVIS_BUILD_DIR/tests/behat/.composer/vendor/composer/*.php
+  - rm -f "$DRUPAL_TI_CACHE_DIR"/TRAVIS_BUILD_DIR/tests/behat/.composer/vendor/autoload.php
+
+  # Tests for differences and touches a file if any are detected (optional).
+  - du -sh "$DRUPAL_TI_CACHE_DIR"
+  - drupal-ti --sync-cache
 
 after_script:
   - drupal-ti after_script
