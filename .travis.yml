@@ -16,7 +16,7 @@ php:
 #  - 5.3
 #  - 5.4
   - 5.5
-  - 5.6
+#  - 5.6
 #  - 7
 #  - hhvm
 
@@ -40,22 +40,23 @@ matrix:
     - php: 5.4
       env: DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8"
   include:
-    # Test single runners on PHP 5.4.
-    - php: 5.4
-      env: DRUPAL_TI_RUNNERS="phpunit" DRUPAL_TI_ENVIRONMENT="drupal-7"
-    - php: 5.4
-      env: DRUPAL_TI_RUNNERS="simpletest" DRUPAL_TI_ENVIRONMENT="drupal-7"
-    - php: 5.4
-      env: DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
-    # Test selenium and firefox / chrome browsers.
-    - php: 5.4
-      env: DRUPAL_TI_BEHAT_DRIVER="selenium" DRUPAL_TI_BEHAT_BROWSER="firefox" DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
-    - php: 5.4
-      env: DRUPAL_TI_BEHAT_DRIVER="selenium" DRUPAL_TI_BEHAT_BROWSER="chrome" DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
-    # Test working hhvm tests.
-    - php: hhvm
-      env: DRUPAL_TI_RUNNERS="phpunit behat" DRUPAL_TI_ENVIRONMENT="drupal-8"
+#    # Test single runners on PHP 5.4.
+#    - php: 5.4
+#      env: DRUPAL_TI_RUNNERS="phpunit" DRUPAL_TI_ENVIRONMENT="drupal-7" DRUPAL_TI_SAVE_CACHE="0"
+#    - php: 5.4
+#      env: DRUPAL_TI_RUNNERS="simpletest" DRUPAL_TI_ENVIRONMENT="drupal-7" DRUPAL_TI_SAVE_CACHE="0"
+#    - php: 5.4
+#      env: DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7" DRUPAL_TI_SAVE_CACHE="0"
+#    # Test selenium and firefox / chrome browsers.
+#    - php: 5.4
+#      env: DRUPAL_TI_BEHAT_DRIVER="selenium" DRUPAL_TI_BEHAT_BROWSER="firefox" DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7" DRUPAL_TI_SAVE_CACHE="0"
+#    - php: 5.4
+#      env: DRUPAL_TI_BEHAT_DRIVER="selenium" DRUPAL_TI_BEHAT_BROWSER="chrome" DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7" DRUPAL_TI_SAVE_CACHE="0"
+#    # Test working hhvm tests.
+#    - php: hhvm
+#      env: DRUPAL_TI_RUNNERS="phpunit behat" DRUPAL_TI_ENVIRONMENT="drupal-8" DRUPAL_TI_SAVE_CACHE="0"
 
+#
 env:
   global:
     # add composer's global bin directory to the path
@@ -118,7 +119,7 @@ env:
 
     - DRUPAL_TI_CACHE_DIR="$HOME/drupal-ti-cache/"
     - DRUPAL_TI_LOAD_CACHE="1"
-    - DRUPAL_TI_SAVE_CACHE="0"
+    - DRUPAL_TI_SAVE_CACHE="1"
 
   matrix:
     # Ensure that runners work isolated.
@@ -126,8 +127,9 @@ env:
     #- DRUPAL_TI_RUNNERS="simpletest" DRUPAL_TI_ENVIRONMENT="drupal-7"
     #- DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
     # And in combination.
-    - DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-7" DRUPAL_TI_SAVE_CACHE="1"
-    - DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8" DRUPAL_TI_SAVE_CACHE="1"
+    #- DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
+    #- DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8"
+    - DRUPAL_TI_RUNNERS="phpunit" DRUPAL_TI_ENVIRONMENT="drupal-7"
 
 mysql:
   database: drupal_travis_db
@@ -167,6 +169,7 @@ before_script:
 script:
   - drupal-ti script
   # Save caches @todo make simpler.
+  # @todo Do this in load step already.
   - mv $HOME/drupal-ti-cache $HOME/drupal-ti-cache.old
   - rm -f $HOME/drupal-ti-cache.old/x-drupal-ti-cache
 
