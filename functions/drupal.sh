@@ -96,7 +96,7 @@ function drupal_ti_ensure_hhvm_fastcgi() {
 cat <<EOF >"$DRUPAL_TI_HHVM_INI"
 ; php options
 
-pid = /tmp/hvvm.pid
+pid = /tmp/hhvm.pid
 
 ; hhvm specific
 
@@ -106,6 +106,7 @@ hhvm.server.default_document = index.php
 hhvm.log.use_log_file = true
 hhvm.log.file = /tmp/hhvm-error.log
 hhvm.repo.central.path = /tmp/hhvm.hhbc
+auto_prepend_file = $DRUPAL_TI_SCRIPT_DIR/utility/hhvm-serve-prepend-drupal-ti.php
 EOF
 
 	hhvm --config "$DRUPAL_TI_HHVM_INI" --mode daemon
@@ -140,6 +141,7 @@ pm.max_spare_servers = 3
 
 pm.status_path = /php-fpm-status
 ping.path = /php-fpm-ping
+php_value[auto_prepend_file] = $DRUPAL_TI_SCRIPT_DIR/utility/hhvm-serve-prepend-drupal-ti.php
 EOF
 	{ php-fpm -F -y "$DRUPAL_TI_PHP_FPM_CONF" | drupal_ti_log_output "php-fpm"; } &
 }
@@ -150,7 +152,7 @@ EOF
 function drupal_ti_ensure_hhvm_serve() {
 	export GOPATH="$DRUPAL_TI_DIST_DIR/go"
 	mkdir -p "$GOPATH"
-	go get github.com/beberlei/hhvm-serve
+	go get -v -u github.com/LionsAd/hhvm-serve
 }
 
 #
