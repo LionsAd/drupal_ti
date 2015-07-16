@@ -22,7 +22,7 @@ class DrupalTiTestTest extends WebTestBase {
    *
    * @var array
    */
-  public static $modules = array('drupal_ti_test');
+  public static $modules = array('drupal_ti_test', 'node');
 
   /**
    * The basic functionality of the DrupalTiTest class.
