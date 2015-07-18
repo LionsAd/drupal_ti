@@ -1,5 +1,11 @@
 # drupal\_ti - Travis Integration for Drupal modules
 
+[![Build Status](https://travis-ci.org/LionsAd/drupal_ti.svg?branch=master)](https://travis-ci.org/LionsAd/drupal_ti)
+
+# Versions
+
+[![Latest Stable Version](https://poser.pugx.org/lionsad/drupal_ti/v/stable)](https://packagist.org/packages/lionsad/drupal_ti) [![Total Downloads](https://poser.pugx.org/lionsad/drupal_ti/downloads)](https://packagist.org/packages/lionsad/drupal_ti) [![Latest Unstable Version](https://poser.pugx.org/lionsad/drupal_ti/v/unstable)](https://packagist.org/packages/lionsad/drupal_ti) [![License](https://poser.pugx.org/lionsad/drupal_ti/license)](https://packagist.org/packages/lionsad/drupal_ti)
+
 ### Welcome!
 
 Welcome and thanks for trying drupal\_ti!
@@ -81,7 +87,3 @@ Example:
 ````
 
 Contributions are welcome.
-
-### Status
-
-[![Build Status](https://travis-ci.org/LionsAd/drupal_ti.svg?branch=master)](https://travis-ci.org/LionsAd/drupal_ti)
