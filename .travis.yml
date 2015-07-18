@@ -107,6 +107,8 @@ env:
 
     # PHPUnit specific commandline arguments.
     - DRUPAL_TI_PHPUNIT_ARGS=""
+    # This is relative to $TRAVIS_BUILD_DIR
+    - DRUPAL_TI_PHPUNIT_CORE_SRC_DIRECTORY="./tests/src"
 
     # Code coverage via coveralls.io
     - DRUPAL_TI_COVERAGE="satooshi/php-coveralls:0.6.*"
