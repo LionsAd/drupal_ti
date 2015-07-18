@@ -15,7 +15,7 @@ use Drupal\drupal_ti_test\DrupalTiTest;
 class DrupalTiTestTest extends \PHPUnit_Framework_TestCase {
 
   /**
-   * @covers ::bar()
+   * @covers ::bar
    */
   public function test_bar() {
     $test = new DrupalTiTest();
