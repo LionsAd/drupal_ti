@@ -107,6 +107,10 @@ hhvm.log.use_log_file = true
 hhvm.log.file = /tmp/hhvm-error.log
 hhvm.repo.central.path = /tmp/hhvm.hhbc
 auto_prepend_file = $DRUPAL_TI_SCRIPT_DIR/utility/hhvm-serve-prepend-drupal-ti.php
+
+; MySQL optimization
+mysql.connect_timeout = 3000
+default_socket_timeout = 3000
 EOF
 
 	hhvm --config "$DRUPAL_TI_HHVM_INI" --mode daemon

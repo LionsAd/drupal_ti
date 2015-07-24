@@ -8,3 +8,6 @@ drupal_ti_ensure_php_for_drush_webserver
 
 # Ensure that drush is installed.
 drupal_ti_ensure_drush
+
+# Optimize MySQL timeout and max packet size.
+drupal_ti_optimize_mysql
