@@ -33,10 +33,9 @@ function drupal_ti_ensure_drupal() {
 }
 
 #
-# Ensures that the module is linked into the Drupal code base
-# and enabled.
+# Ensures that the module is linked into the Drupal code base.
 #
-function drupal_ti_ensure_module() {
+function drupal_ti_ensure_module_linked() {
 	# Ensure we are in the right directory.
 	cd "$DRUPAL_TI_DRUPAL_DIR"
 
@@ -55,6 +54,16 @@ function drupal_ti_ensure_module() {
 
 	# Point module into the drupal installation.
 	ln -sf "$MODULE_DIR" "$DRUPAL_TI_MODULES_PATH/$DRUPAL_TI_MODULE_NAME"
+}
+
+
+#
+# Ensures that the module is linked into the Drupal code base
+# and enabled.
+#
+function drupal_ti_ensure_module() {
+	# Ensure the module is linked into the code base.
+	drupal_ti_ensure_module_linked
 
 	# Enable it to download dependencies.
 	drush --yes en "$DRUPAL_TI_MODULE_NAME"
