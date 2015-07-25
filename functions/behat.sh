@@ -84,13 +84,16 @@ function drupal_ti_ensure_chrome() {
 		return
 	fi
 
+	# @todo Move to defaults API.
+	if [ -z "$DRUPAL_TI_BEHAT_CHROME_URL" ]
+	then
+		DRUPAL_TI_BEHAT_CHROME_URL="https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
+	fi
+
 	drupal_ti_ensure_apt_get
 	(
 		cd $DRUPAL_TI_DIST_DIR
-		# @todo Make version configurable.
-		# wget -O google-chrome-stable_current_amd64.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-		# @todo Do not pin to Chrome 43.0.
-		wget -O google-chrome-stable_current_amd64.deb http://mirror.pcbeta.com/google/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_43.0.2357.134-1_amd64.deb
+		wget -O google-chrome-stable_current_amd64.deb "$DRUPAL_TI_BEHAT_CHROME_URL"
 		dpkg -x google-chrome-stable_current_amd64.deb .
 	)
 	drupal_ti_ensure_bin_dir
