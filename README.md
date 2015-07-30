@@ -87,3 +87,7 @@ Example:
 ````
 
 Contributions are welcome.
+
+### Drush
+
+For your convenience the 'drush site-set' command is set for the Drupal installation, so any Drush commands triggered in your own scripts will be run against the test Drupal instance.
