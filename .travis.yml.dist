@@ -41,6 +41,9 @@ env:
     # The environment to use, supported are: drupal-7, drupal-8
     - DRUPAL_TI_ENVIRONMENT="drupal-7"
 
+    # The installation profile to use:
+    #- DRUPAL_TI_INSTALL_PROFILE="testing"
+
     # Drupal specific variables.
     - DRUPAL_TI_DB="drupal_travis_db"
     - DRUPAL_TI_DB_URL="mysql://root:@127.0.0.1/drupal_travis_db"
