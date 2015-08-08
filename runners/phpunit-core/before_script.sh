@@ -3,8 +3,8 @@
 
 set -e $DRUPAL_TI_DEBUG
 
-# Ensure the right Drupal version is installed.
+# Ensure the right Drupal version is downloaded.
 drupal_ti_ensure_drupal
 
-# Ensure the module is linked into the code base and enabled.
-drupal_ti_ensure_module
+# Ensure the module is linked into the code base.
+drupal_ti_ensure_module_linked

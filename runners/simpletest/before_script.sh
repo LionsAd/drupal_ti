@@ -4,7 +4,7 @@
 set -e $DRUPAL_TI_DEBUG
 
 # Ensure the right Drupal version is installed.
-drupal_ti_ensure_drupal
+drupal_ti_ensure_drupal_installed
 
 # Enable simpletest module.
 cd "$DRUPAL_TI_DRUPAL_DIR"

@@ -2,9 +2,15 @@
 # @file
 # Drupal-8 environment variables and functions.
 
-function drupal_ti_install_drupal() {
+function drupal_ti_download_drupal() {
 	git clone --depth 1 --branch 8.0.x http://git.drupal.org/project/drupal.git
-	cd drupal
+}
+
+function drupal_ti_install_drupal() {
+	if [ ! -f install.php ]
+	then
+		return -1
+	fi
 	php -d sendmail_path=$(which true) ~/.composer/vendor/bin/drush.php --yes -v site-install minimal --db-url="$DRUPAL_TI_DB_URL"
 	drush use $(pwd)#default
 }
