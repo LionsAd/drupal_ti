@@ -2,9 +2,16 @@
 # @file
 # Drupal-7 environment variables and functions.
 
-function drupal_ti_install_drupal() {
+function drupal_ti_download_drupal() {
 	drush --yes dl drupal-7 --drupal-project-rename=drupal
-	cd drupal
+}
+
+function drupal_ti_install_drupal() {
+	if [ ! -f install.php ]
+	then
+		return -1
+	fi
+
 	php -d sendmail_path=$(which true) ~/.composer/vendor/bin/drush.php --yes site-install "$DRUPAL_TI_INSTALL_PROFILE" --db-url="$DRUPAL_TI_DB_URL"
 	drush use $(pwd)#default
 }
