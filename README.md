@@ -86,6 +86,51 @@ Example:
 - DRUPAL_TI_SCRIPT_DIR_AFTER="./drupal_ti/after  ./vendor/lionsad/drupal_ti_base_cool/drupal_ti/after"
 ````
 
+### Adding module depedencies from Github repositories
+
+Your module may have several dependencies that are not hosted on Drupal.org. These modules can be added using a custom script and `including` them in the `.travis.yml` file.
+
+In `.travis.yml` you will have a section `before_script`. The default command here installs drupal and the module we are testing. We can add a command `drupal-ti --include [script]`. This command will load the script first and then run the default `drupal-ti before_script` command.
+
+`.travis.yml`
+````
+before_script:
+  # We run our script to add module dependencies
+  # This uses git clone over HTTPS because the modules don't currently
+  # exist on drupal.org.
+  - drupal-ti --include drupal_ti/before/before_script.sh
+  - drupal-ti before_script
+````
+
+The script path is relative to our `/tests` directory since we moved to that default directory during the `before_install` process.
+
+We can now create our custom script as follows,
+
+`/tests/drupal_ti/before/before_script.sh`
+````
+#!/bin/bash
+
+# Add an optional statement to see that this is running in Travis CI.
+echo "running drupal_ti/before/before_script.sh"
+
+set -e $DRUPAL_TI_DEBUG
+
+# Ensure the right Drupal version is installed.
+# The first time this is run, it will install Drupal.
+# Note: This function is re-entrant.
+drupal_ti_ensure_drupal
+
+# Change to the Drupal directory
+cd "$DRUPAL_TI_DRUPAL_DIR"
+
+# Manually clone the dependencies
+git clone https://github.com/my-project/my-repo.git modules/my_module
+````
+
+The directory `/tests/drupal_ti/before/` can also be used to add auto-discovered scripts using a more complex pattern `/tests/before/runners/[runner]/[command].sh`. This will, however be limited to a specific runner, while the above `include` pattern will run for all runners.
+
+### Contributions
+
 Contributions are welcome.
 
 ### Drush
