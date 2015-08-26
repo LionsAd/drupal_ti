@@ -132,7 +132,7 @@ cd "$DRUPAL_TI_DRUPAL_DIR/$DRUPAL_TI_MODULES_PATH"
 # Manually clone the dependencies
 git clone --depth 1 https://github.com/my-project/my-dependency.git
 # or with a different branch
-git clone --depth 1 --branch 8.x-1.x http://git.drupal.org/my-project/my-dependency.git
+git clone --depth 1 --branch 8.x-1.x https://github.com/my-project/my-dependency.git
 ````
 
 The directory `/tests/drupal_ti/before/` can also be used to add auto-discovered scripts using a more complex pattern `/tests/before/runners/[runner]/[command].sh`. This will, however be limited to a specific runner, while the above `include` pattern will run for all runners.
