@@ -92,7 +92,7 @@ Your module may have several dependencies that are not hosted on Drupal.org. The
 
 In `.travis.yml` you will have a section `before_script`. The default command here installs drupal and the module we are testing. We can add a command `drupal-ti --include [script]`. This command will load the script first and then run the default `drupal-ti before_script` command.
 
-`.travis.yml`
+#### .travis.yml
 ````
 before_script:
   # We run our script to add module dependencies
@@ -106,7 +106,7 @@ The script path is relative to our `/tests` directory since we moved to that def
 
 We can now create our custom script as follows,
 
-`/tests/drupal_ti/before/before_script.sh`
+#### /tests/drupal_ti/before/before_script.sh
 ````
 #!/bin/bash
 
@@ -123,11 +123,60 @@ drupal_ti_ensure_drupal
 # Change to the Drupal directory
 cd "$DRUPAL_TI_DRUPAL_DIR"
 
+# Create the the module directory (only necessary for D7)
+# For D7, this is sites/default/modules
+# For D8, this is modules
+mkdir -p "$DRUPAL_TI_DRUPAL_DIR/$DRUPAL_TI_MODULES_PATH"
+cd "$DRUPAL_TI_DRUPAL_DIR/$DRUPAL_TI_MODULES_PATH"
+
 # Manually clone the dependencies
-git clone https://github.com/my-project/my-repo.git modules/my_module
+git clone --depth 1 https://github.com/my-project/my-dependency.git
+# or with a different branch
+git clone --depth 1 --branch 8.x-1.x http://git.drupal.org/my-project/my-dependency.git
 ````
 
 The directory `/tests/drupal_ti/before/` can also be used to add auto-discovered scripts using a more complex pattern `/tests/before/runners/[runner]/[command].sh`. This will, however be limited to a specific runner, while the above `include` pattern will run for all runners.
+
+#### Script with Composer Manager
+Composer manager is a popular dependency and one that requires extra work in order to be set up.
+
+````
+#!/bin/bash
+
+# Add an optional statement to see that this is running in Travis CI.
+echo "running drupal_ti/before/before_script.sh"
+
+set -e $DRUPAL_TI_DEBUG
+
+# Ensure the right Drupal version is installed.
+# The first time this is run, it will install Drupal.
+# Note: This function is re-entrant.
+drupal_ti_ensure_drupal
+
+# Change to the Drupal directory
+cd "$DRUPAL_TI_DRUPAL_DIR"
+
+# Create the the module directory (only necessary for D7)
+# For D7, this is sites/default/modules
+# For D8, this is modules
+mkdir -p "$DRUPAL_TI_DRUPAL_DIR/$DRUPAL_TI_MODULES_PATH"
+cd "$DRUPAL_TI_DRUPAL_DIR/$DRUPAL_TI_MODULES_PATH"
+
+# Manually clone the dependencies
+git clone --depth 1 --branch 8.x-1.x http://git.drupal.org/project/composer_manager.git
+
+# Initialize composer manage
+php "$DRUPAL_TI_DRUPAL_DIR/$DRUPAL_TI_MODULES_PATH/composer_manager/scripts/init.php"
+
+# Ensure the module is linked into the code base and enabled.
+# Note: This function is re-entrant.
+drupal_ti_ensure_module_linked
+
+# Update composer
+cd "$DRUPAL_TI_DRUPAL_DIR"
+composer drupal-rebuild
+composer install --prefer-source
+````
 
 ### Contributions
 
