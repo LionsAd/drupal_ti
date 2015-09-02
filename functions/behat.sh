@@ -121,7 +121,7 @@ function drupal_ti_ensure_chrome_driver() {
 	cd $DRUPAL_TI_BIN_DIR
 
 	# @todo Make version configurable.
-	local CHROMEDRIVER_VERSION=`wget http://chromedriver.storage.googleapis.com/LATEST_RELEASE -qO-`
+	CHROMEDRIVER_VERSION=$(wget http://chromedriver.storage.googleapis.com/LATEST_RELEASE -qO-)
 	wget http://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip
 	unzip chromedriver_linux64.zip
 	rm -f chromedriver_linux64.zip
