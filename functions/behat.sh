@@ -33,9 +33,15 @@ function drupal_ti_ensure_selenium() {
 	mkdir -p selenium-server
 	cd selenium-server
 
+	# Append a .0 if the version doesn't include one.
+	dots="${DRUPAL_TI_BEHAT_SELENIUM_VERSION//[^\.]}"
+	if [ ${#dots} -lt 2 ]; then
+		DRUPAL_TI_BEHAT_SELENIUM_VERSION=$DRUPAL_TI_BEHAT_SELENIUM_VERSION.0
+	fi
+
 	# @todo Make whole file URL overridable via defaults based on env.
-	wget "http://selenium-release.storage.googleapis.com/$DRUPAL_TI_BEHAT_SELENIUM_VERSION/selenium-server-standalone-$DRUPAL_TI_BEHAT_SELENIUM_VERSION.0.jar"
-	{ java -jar "selenium-server-standalone-$DRUPAL_TI_BEHAT_SELENIUM_VERSION.0.jar" $DRUPAL_TI_BEHAT_SELENIUM_ARGS 2>&1 | drupal_ti_log_output "selenium" ; } &
+	wget "http://selenium-release.storage.googleapis.com/${DRUPAL_TI_BEHAT_SELENIUM_VERSION%.*}/selenium-server-standalone-$DRUPAL_TI_BEHAT_SELENIUM_VERSION.jar"
+	{ java -jar "selenium-server-standalone-$DRUPAL_TI_BEHAT_SELENIUM_VERSION.jar" $DRUPAL_TI_BEHAT_SELENIUM_ARGS 2>&1 | drupal_ti_log_output "selenium" ; } &
 
         # Wait until selenium has been started.
         drupal_ti_wait_for_service_port 4444
