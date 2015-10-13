@@ -100,7 +100,7 @@ env:
     # This is used to setup Xvfb.
     - DRUPAL_TI_BEHAT_SCREENSIZE_COLOR="1280x1024x16"
     # The version of selenium that should be used.
-    - DRUPAL_TI_BEHAT_SELENIUM_VERSION="2.44"
+    - DRUPAL_TI_BEHAT_SELENIUM_VERSION="2.48.2"
     # Set DRUPAL_TI_BEHAT_DRIVER to "selenium" to use "firefox" or "chrome" here.
     - DRUPAL_TI_BEHAT_DRIVER="phantomjs"
     - DRUPAL_TI_BEHAT_BROWSER="firefox"
