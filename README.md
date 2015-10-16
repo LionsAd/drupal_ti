@@ -86,7 +86,7 @@ Example:
 - DRUPAL_TI_SCRIPT_DIR_AFTER="./drupal_ti/after  ./vendor/lionsad/drupal_ti_base_cool/drupal_ti/after"
 ````
 
-### Adding module depedencies from Github repositories
+### Adding module dependencies from Github repositories
 
 Your module may have several dependencies that are not hosted on Drupal.org. These modules can be added using a custom script and `including` them in the `.travis.yml` file.
 
