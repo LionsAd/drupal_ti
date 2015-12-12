@@ -5,7 +5,7 @@
 function drupal_ti_install_drupal() {
 	drush --yes dl drupal-7 --drupal-project-rename=drupal
 	cd drupal
-	php -d sendmail_path=$(which true) ~/.composer/vendor/bin/drush.php --yes site-install testing --db-url="$DRUPAL_TI_DB_URL"
+	php -d sendmail_path=$(which true) ~/.composer/vendor/bin/drush.php --yes site-install "$DRUPAL_TI_INSTALL_PROFILE" --db-url="$DRUPAL_TI_DB_URL"
 	drush use $(pwd)#default
 }
 
@@ -29,4 +29,10 @@ PHP_VERSION=$(phpenv version-name)
 if [ "$PHP_VERSION" = "5.3" ]
 then
 	export DRUPAL_TI_DRUSH_VERSION="drush/drush:6.*"
+fi
+
+# Use 'testing' by default for Drupal 7.
+if [ -z "$DRUPAL_TI_INSTALL_PROFILE" ]
+then
+	export DRUPAL_TI_INSTALL_PROFILE="testing"
 fi
