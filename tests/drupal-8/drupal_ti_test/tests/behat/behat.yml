@@ -13,7 +13,9 @@ default:
       browser_name: firefox
     Drupal\DrupalExtension:
       blackbox: ~
-      api_driver: "drush"
+      api_driver: "drupal"
       drush_driver: "drush"
+      drupal:
+        drupal_root: "/Users/fabian/Sites/render-cache/"
       drush:
         root: "/Users/fabian/Sites/render-cache/"

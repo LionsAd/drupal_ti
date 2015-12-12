@@ -13,7 +13,9 @@ default:
       browser_name: "$DRUPAL_TI_BEHAT_BROWSER"
     Drupal\DrupalExtension:
       blackbox: ~
-      api_driver: "drush"
+      api_driver: "drupal"
       drush_driver: "drush"
+      drupal:
+        drupal_root: "$DRUPAL_TI_DRUPAL_DIR"
       drush:
         root: "$DRUPAL_TI_DRUPAL_DIR"
