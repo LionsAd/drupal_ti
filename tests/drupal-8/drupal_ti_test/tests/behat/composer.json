@@ -1,5 +1,6 @@
 {
   "require": {
-    "drupal/drupal-extension": "~3.0"
+    "drupal/drupal-extension": "~3.0",
+    "drupal/drupal-driver": "dev-master"
   }
 }
