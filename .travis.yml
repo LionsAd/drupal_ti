@@ -81,6 +81,13 @@ env:
     #- DRUPAL_TI_ENVIRONMENT="drupal-7"
 
     # The installation profile to use:
+    #
+    # Note: This is customized for drupal-8 environment in
+    #       tests/drupal-8/drupal_ti_test/tests/drupal_ti/before/environments/drupal-8.sh.
+    #
+    # The reason is that behat strongly depends on a logout link being present,
+    # but minimal does not have one.
+    #
     #- DRUPAL_TI_INSTALL_PROFILE="testing"
 
     # Drupal specific variables.
