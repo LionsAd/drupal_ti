@@ -5,7 +5,7 @@
 function drupal_ti_install_drupal() {
 	git clone --depth 1 --branch 8.0.x http://git.drupal.org/project/drupal.git
 	cd drupal
-	php -d sendmail_path=$(which true) ~/.composer/vendor/bin/drush.php --yes -v site-install minimal --db-url="$DRUPAL_TI_DB_URL"
+	php -d sendmail_path=$(which true) ~/.composer/vendor/bin/drush.php --yes -v site-install $DRUPAL_TI_INSTALL_PROFILE --db-url="$DRUPAL_TI_DB_URL"
 	drush use $(pwd)#default
 }
 
@@ -23,3 +23,9 @@ export PATH="$DRUPAL_TI_DIST_DIR/usr/bin:$PATH"
 
 # Display used for running selenium browser.
 export DISPLAY=:99.0
+
+# Use 'minimal' by default.
+if [ -z "$DRUPAL_TI_INSTALL_PROFILE" ]
+then
+	export DRUPAL_TI_INSTALL_PROFILE="minimal"
+fi
