@@ -11,6 +11,8 @@ use Drupal\drupal_ti_test\DrupalTiTest;
 
 /**
  * @coversDefaultClass \Drupal\drupal_ti_test\DrupalTiTest
+ *
+ * @group drupal_ti_test
  */
 class DrupalTiTestTest extends \PHPUnit_Framework_TestCase {
 

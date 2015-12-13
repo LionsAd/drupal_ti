@@ -12,6 +12,8 @@ use Drupal\KernelTests\KernelTestBase;
 
 /**
  * @coversDefaultClass \Drupal\drupal_ti_test\DrupalTiTest
+ *
+ * @group drupal_ti_test
  */
 class DrupalTiTestTest extends KernelTestBase {
 
