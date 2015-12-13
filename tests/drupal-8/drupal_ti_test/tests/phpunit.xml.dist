@@ -3,7 +3,7 @@
 <phpunit colors="true" bootstrap="./vendor/autoload.php">
   <testsuites>
     <testsuite name="DrupalTiTest">
-        <directory>./src/</directory>
+        <directory>./src/Unit/</directory>
     </testsuite>
   </testsuites>
   <!-- Filter for coverage reports. -->
