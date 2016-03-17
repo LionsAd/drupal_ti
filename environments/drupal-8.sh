@@ -13,7 +13,7 @@ function drupal_ti_clear_caches() {
 	drush cr
 }
 
-export DRUPAL_TI_DRUSH_VERSION="drush/drush:dev-master"
+export DRUPAL_TI_DRUSH_VERSION="drush/drush:8.*"
 export DRUPAL_TI_SIMPLETEST_FILE="core/scripts/run-tests.sh"
 export DRUPAL_TI_MODULES_PATH="modules"
 export DRUPAL_TI_DRUPAL_BASE="$TRAVIS_BUILD_DIR/../drupal-8"
