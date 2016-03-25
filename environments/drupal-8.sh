@@ -22,7 +22,7 @@ export DRUPAL_TI_DIST_DIR="$HOME/.dist"
 export PATH="$DRUPAL_TI_DIST_DIR/usr/bin:$PATH"
 if [ -z "$DRUPAL_TI_CORE_BRANCH" ]
 then
-	export DRUPAL_TI_CORE_BRANCH="8.0.x"
+	export DRUPAL_TI_CORE_BRANCH="8.1.x"
 fi
 
 # Display used for running selenium browser.
