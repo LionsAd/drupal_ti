@@ -3,8 +3,9 @@
 # Drupal-8 environment variables and functions.
 
 function drupal_ti_install_drupal() {
-	git clone --depth 1 --branch 8.0.x http://git.drupal.org/project/drupal.git
+	git clone --depth 1 --branch "$DRUPAL_TI_CORE_BRANCH" http://git.drupal.org/project/drupal.git
 	cd drupal
+	composer install
 	php -d sendmail_path=$(which true) ~/.composer/vendor/bin/drush.php --yes -v site-install "$DRUPAL_TI_INSTALL_PROFILE" --db-url="$DRUPAL_TI_DB_URL"
 	drush use $(pwd)#default
 }
@@ -20,6 +21,10 @@ export DRUPAL_TI_DRUPAL_BASE="$TRAVIS_BUILD_DIR/../drupal-8"
 export DRUPAL_TI_DRUPAL_DIR="$DRUPAL_TI_DRUPAL_BASE/drupal"
 export DRUPAL_TI_DIST_DIR="$HOME/.dist"
 export PATH="$DRUPAL_TI_DIST_DIR/usr/bin:$PATH"
+if [ -z "$DRUPAL_TI_CORE_BRANCH" ]
+then
+	export DRUPAL_TI_CORE_BRANCH="8.0.x"
+fi
 
 # Display used for running selenium browser.
 export DISPLAY=:99.0
