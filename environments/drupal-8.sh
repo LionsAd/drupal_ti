@@ -32,6 +32,9 @@ export DISPLAY=:99.0
 # export SIMPLETEST_DB for KernelTestBase, so it is available for all runners.
 export SIMPLETEST_DB="$DRUPAL_TI_DB_URL"
 
+# export SIMPLETEST_BASE_URL for BrowserTestBase, so it is available for all runners.
+export SIMPLETEST_BASE_URL="$DRUPAL_TI_WEBSERVER_URL:$DRUPAL_TI_WEBSERVER_PORT"
+
 # Use 'minimal' by default for Drupal 8.
 if [ -z "$DRUPAL_TI_INSTALL_PROFILE" ]
 then
