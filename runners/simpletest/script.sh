@@ -11,6 +11,7 @@ then
         ARGS=( "${ARGS[@]}" "$DRUPAL_TI_SIMPLETEST_GROUP" )
 fi
 
+drupal_ti_simpletest_coverage_start
 
 cd "$DRUPAL_TI_DRUPAL_DIR"
 { php "$DRUPAL_TI_SIMPLETEST_FILE" --php $(which php) "${ARGS[@]}" || echo "1 fails"; } | tee /tmp/simpletest-result.txt

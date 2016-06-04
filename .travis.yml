@@ -146,6 +146,9 @@ env:
     - DRUPAL_TI_CACHE_DIRS_HOME=".composer|.drush|.dist"
     - DRUPAL_TI_CACHE_DIRS_TRAVIS_BUILD_DIR="tests/vendor|tests/behat/vendor"
 
+    # Enable code coverage on simpletest.
+    - DRUPAL_TI_SIMPLETEST_COVERAGE="1"
+
   matrix:
     # Ensure that runners work isolated.
     #- DRUPAL_TI_RUNNERS="phpunit" DRUPAL_TI_ENVIRONMENT="drupal-7"
