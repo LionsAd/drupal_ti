@@ -12,7 +12,7 @@ Welcome and thanks for trying drupal\_ti!
 
 This will make it simple to use travis to test your drupal modules with simpletest and phpunit tests.
 
-All you need is to push your drupal.org repository to Github, setup the module below, login to travis-ci.org, setup the repo and you are up and running in to time.
+All you need is to push your drupal.org repository to Github, setup the module below, login to travis-ci.org, setup the repo and you are up and running in no time.
 
 ### Setup
 
