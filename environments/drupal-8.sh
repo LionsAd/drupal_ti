@@ -15,6 +15,23 @@ function drupal_ti_clear_caches() {
 	drush cr
 }
 
+#
+# Ensures that the module is linked into the Drupal code base.
+#
+function drupal_ti_ensure_module_linked() {
+	# Ensure we are in the right directory.
+	cd "$DRUPAL_TI_DRUPAL_DIR"
+
+	# This function is re-entrant.
+	if [ -L "$DRUPAL_TI_MODULES_PATH/$DRUPAL_TI_MODULE_NAME" ]
+	then
+		return
+	fi
+
+	composer config repositories.$DRUPAL_TI_MODULE_NAME path $TRAVIS_BUILD_DIR
+	composer require drupal/$DRUPAL_TI_MODULE_NAME
+}
+
 export DRUPAL_TI_DRUSH_VERSION="drush/drush:8.0.*"
 export DRUPAL_TI_SIMPLETEST_FILE="core/scripts/run-tests.sh"
 export DRUPAL_TI_MODULES_PATH="modules"
