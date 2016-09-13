@@ -1,0 +1,16 @@
+{
+    "name": "drupal/drupal_ti_test",
+    "type": "drupal-module",
+    "description": "Drupal Travis Integration - Test module.",
+    "homepage": "https://github.com/LionsAd/drupal_ti",
+    "license": "GPL-2.0+",
+    "repositories": [
+        {
+            "type": "composer",
+            "url":  "https://packages.drupal.org/8"
+        }
+    ],
+    "require": {
+      "drupal/core": "~8"
+    }
+}
