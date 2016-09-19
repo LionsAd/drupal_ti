@@ -6,7 +6,6 @@ function drupal_ti_install_drupal() {
 	git clone --depth 1 --branch "$DRUPAL_TI_CORE_BRANCH" http://git.drupal.org/project/drupal.git
 	cd drupal
 	composer install
-	composer config repositories.drupal composer https://packages.drupal.org/8
 	php -d sendmail_path=$(which true) ~/.composer/vendor/bin/drush.php --yes -v site-install "$DRUPAL_TI_INSTALL_PROFILE" --db-url="$DRUPAL_TI_DB_URL"
 	drush use $(pwd)#default
 }
@@ -29,7 +28,8 @@ function drupal_ti_ensure_module_linked() {
 	fi
 
 	composer config repositories.$DRUPAL_TI_MODULE_NAME path $TRAVIS_BUILD_DIR
-	composer require drupal/$DRUPAL_TI_MODULE_NAME
+	composer config repositories.drupal composer https://packages.drupal.org/8
+	composer require drupal/$DRUPAL_TI_MODULE_NAME *@dev
 }
 
 export DRUPAL_TI_DRUSH_VERSION="drush/drush:8.0.*"
