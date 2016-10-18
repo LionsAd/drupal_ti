@@ -188,6 +188,7 @@ function drupal_ti_ensure_php_for_drush_webserver() {
 	then
 		# Hack: Remove me.
 		#return
+		echo "Overriding PHP version check" 1>&2
 	fi
 	if [ "$PHP_VERSION" = "hhvm" ]
 	then
