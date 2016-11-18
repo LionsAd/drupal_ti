@@ -13,10 +13,10 @@ function drupal_ti_optimize_mysql() {
 	fi
 
 	# Increase the MySQL server timeout.
-	mysql -e "SET GLOBAL wait_timeout = 36000;"
+	mysql -h 127.0.0.1 -P 3306 -u root -e "SET GLOBAL wait_timeout = 36000;"
 
 	# The max-allowed packet size does only grow when a request uses
 	# the packet size, so it is safe to set it to a high number. In this
 	# case 32 MB.
-	mysql -e "SET GLOBAL max_allowed_packet = 33554432;"
+	mysql -h 127.0.0.1 -P 3306 -u root -e "SET GLOBAL max_allowed_packet = 33554432;"
 }
