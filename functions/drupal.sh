@@ -3,9 +3,9 @@
 # Common functionality for common tasks.
 
 #
-# Ensures that the right Drupal version exists.
+# Ensures that the right Drupal version is downloaded.
 #
-function drupal_ti_ensure_drupal() {
+function drupal_ti_ensure_drupal_download() {
 	# This function is re-entrant.
 	if [ -d "$DRUPAL_TI_DRUPAL_DIR" ]
 	then
@@ -30,16 +30,24 @@ function drupal_ti_ensure_drupal() {
 }
 
 #
-# Ensures that Drupal is installed.
+# Ensures that the right Drupal version is installed.
 #
-function drupal_ti_ensure_drupal_installed() {
-	drupal_ti_ensure_drupal
+function drupal_ti_ensure_drupal() {
+	# This function is re-entrant.
+	drupal_ti_ensure_drupal_download
+
+	# @todo Maybe use a different check for Drupal installed.
+	if [ -r "$TRAVIS_BUILD_DIR/../drupal_ti-drupal-installed" ]
+	then
+		return
+	fi
 
 	# Create database and install Drupal.
 	mysql -e "create database $DRUPAL_TI_DB"
 
-	cd drupal
+	cd "$DRUPAL_TI_DRUPAL_DIR"
 	drupal_ti_install_drupal
+	touch "$TRAVIS_BUILD_DIR/../drupal_ti-drupal-installed"
 }
 
 #
