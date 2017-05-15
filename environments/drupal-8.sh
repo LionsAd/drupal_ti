@@ -31,7 +31,12 @@ function drupal_ti_ensure_module_linked() {
   # the local repository must be the first in the list.
 	composer config repositories.0 path $TRAVIS_BUILD_DIR
 	composer config repositories.1 composer https://packages.drupal.org/8
-	composer require drupal/$DRUPAL_TI_MODULE_NAME *@dev
+  if [ -z "$DRUPAL_TI_MODULE_COMPOSER_VERSION" ]
+  then
+    composer require "drupal/$DRUPAL_TI_MODULE_NAME" *@dev
+  else
+    composer require "drupal/$DRUPAL_TI_MODULE_NAME" "$DRUPAL_TI_MODULE_COMPOSER_VERSION"
+  fi
 }
 
 export DRUPAL_TI_DRUSH_VERSION="drush/drush:8.0.*"
