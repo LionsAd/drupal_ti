@@ -5,7 +5,7 @@
 # WARNING: USE .travis.yml.dist INSTEAD.
 # =============================================
 #
-# Based for simpletest upon:
+# Based for simpletest upon1:
 #   https://github.com/sonnym/travis-ci-drupal-module-example
 
 language: php
