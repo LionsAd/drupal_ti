@@ -146,6 +146,10 @@ env:
     - DRUPAL_TI_CACHE_DIRS_HOME=".composer|.drush|.dist"
     - DRUPAL_TI_CACHE_DIRS_TRAVIS_BUILD_DIR="tests/vendor|tests/behat/vendor"
 
+    # Pin to Chrome 56 because newer isn't supported on Ubuntu 12.04.
+    - DRUPAL_TI_BEHAT_CHROME_URL="http://www.slimjetbrowser.com/chrome/lnx/chrome64_56.0.2924.87.deb"
+    - DRUPAL_TI_BEHAT_CHROMEDRIVER_VERSION="2.27"
+
   matrix:
     # Ensure that runners work isolated.
     #- DRUPAL_TI_RUNNERS="phpunit" DRUPAL_TI_ENVIRONMENT="drupal-7"
