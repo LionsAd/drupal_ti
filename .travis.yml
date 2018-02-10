@@ -80,6 +80,9 @@ env:
     # The environment to use, supported are: drupal-7, drupal-8
     #- DRUPAL_TI_ENVIRONMENT="drupal-7"
 
+    # The drush version to use, by default: drush/drush:8.0.*
+    # - DRUPAL_TI_DRUSH_VERSION="drush/drush:~9.0"
+
     # The installation profile to use:
     #
     # Note: This is customized for drupal-8 environment in
