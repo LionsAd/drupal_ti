@@ -34,7 +34,10 @@ function drupal_ti_ensure_module_linked() {
 	composer require drupal/$DRUPAL_TI_MODULE_NAME *@dev
 }
 
-export DRUPAL_TI_DRUSH_VERSION="drush/drush:8.0.*"
+if [ -z "$DRUPAL_TI_DRUSH_VERSION" ]
+then
+  export DRUPAL_TI_DRUSH_VERSION="drush/drush:8.0.*"
+fi
 export DRUPAL_TI_SIMPLETEST_FILE="core/scripts/run-tests.sh"
 export DRUPAL_TI_DRUPAL_BASE="$TRAVIS_BUILD_DIR/../drupal-8"
 export DRUPAL_TI_DRUPAL_DIR="$DRUPAL_TI_DRUPAL_BASE/drupal"
