@@ -8,7 +8,7 @@ function drupal_ti_install_drupal() {
 	composer install
 
 	# Add extra composer dependencies when required.
-	if [ -z "$COMPOSER_EXTRA_DEPENDENCIES" ]
+	if [ -n "$COMPOSER_EXTRA_DEPENDENCIES" ]
 	then
 		composer require "$COMPOSER_EXTRA_DEPENDENCIES" --no-interaction
 	fi
