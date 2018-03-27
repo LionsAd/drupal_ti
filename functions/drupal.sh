@@ -79,9 +79,9 @@ function drupal_ti_run_server() {
 		return
 	fi
 
-	# Use hhvm_serve for PHP 5.3 fcgi and hhvm fcgi
+	# Use hhvm_serve for hhvm fcgi
 	PHP_VERSION=$(phpenv version-name)
-	if [ "$PHP_VERSION" = "5.3" -o "$PHP_VERSION" = "hhvm" ]
+	if [ "$PHP_VERSION" = "hhvm" ]
 	then
 		export GOPATH="$DRUPAL_TI_DIST_DIR/go"
 		export DRUPAL_TI_WEBSERVER_HOST=$(echo "$DRUPAL_TI_WEBSERVER_URL" | sed 's,http://,,')
@@ -169,7 +169,7 @@ function drupal_ti_ensure_hhvm_serve() {
 }
 
 #
-# Ensures a drush webserver can be started for PHP 5.3.
+# Ensures a drush webserver can be started for hhvm.
 #
 function drupal_ti_ensure_php_for_drush_webserver() {
 	# This function is re-entrant.
@@ -178,9 +178,9 @@ function drupal_ti_ensure_php_for_drush_webserver() {
 		return
 	fi
 
-	# install php packages required for running a web server from drush on php 5.3
+	# install php packages required for running a web server from drush on hhvm
 	PHP_VERSION=$(phpenv version-name)
-	if [ "$PHP_VERSION" != "5.3" -a "$PHP_VERSION" != "hhvm" ]
+	if [ "$PHP_VERSION" != "hhvm" ]
 	then
 		return
 	fi

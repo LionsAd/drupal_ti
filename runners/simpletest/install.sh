@@ -3,7 +3,7 @@
 
 set -e $DRUPAL_TI_DEBUG
 
-# Ensure drush webserver can be started for PHP 5.3.
+# Ensure drush webserver can be started for hhvm.
 drupal_ti_ensure_php_for_drush_webserver
 
 # Ensure that drush is installed.
