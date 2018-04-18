@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # @file
-# Common functionality for installing phpcs.
+# Common functionality for installing phpcs and friends.
 
 #
 # Ensures that phpcs is installed.
@@ -8,32 +8,6 @@
 function drupal_ti_ensure_phpcs() {
 	# This function is re-entrant.
 	if [ -r "$TRAVIS_BUILD_DIR/../drupal_ti-phpcs-installed" ]
-	then
-		return
-	fi
-
-	# Check if phpcs is already available.
-	PHPCS=$(which phpcs || echo "")
-
-	if [ -z "$PHPCS" ]
-	then
-		# Install phpcs globally.
-		echo "Installing phpcs: $DRUPAL_TI_PHPCS_VERSION"
-		composer global require --no-interaction "$DRUPAL_TI_PHPCS_VERSION" "$DRUPAL_TI_DRUPAL_CODER_VERSION"
-	else
-		echo "phpcs $DRUPAL_TI_PHPCS_VERSION is already installed."
-		composer global install --no-interaction
-	fi
-
-	touch "$TRAVIS_BUILD_DIR/../drupal_ti-phpcs-installed"
-}
-
-#
-# Ensures that drupal/coder is installed.
-#
-function drupal_ti_ensure_drupal_coder() {
-	# This function is re-entrant.
-	if [ -r "$TRAVIS_BUILD_DIR/../drupal_ti-drupal_coder-installed" ]
 	then
 		return
 	fi
@@ -51,5 +25,5 @@ function drupal_ti_ensure_drupal_coder() {
 		composer global install --no-interaction
 	fi
 
-	touch "$TRAVIS_BUILD_DIR/../drupal_ti-drupal_coder-installed"
+	touch "$TRAVIS_BUILD_DIR/../drupal_ti-phpcs-installed"
 }
