@@ -39,7 +39,7 @@ function drupal_ti_ensure_drupal_coder() {
 	fi
 
 	# Check if drupal/coder is already available.
-	DRUPAL_CODER=$(composer info drupal/coder || echo "")
+	DRUPAL_CODER=$(composer info --no-interaction drupal/coder || echo "")
 
 	if [ -z "$DRUPAL_CODER" ]
 	then
