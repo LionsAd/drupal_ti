@@ -84,6 +84,14 @@ env:
     # This needs to match your .coveralls.yml file.
     - DRUPAL_TI_COVERAGE_FILE="build/logs/clover.xml"
 
+    # === PHPCS specific variables.
+    # These arguments are passed to the phpcs command.
+    - DRUPAL_TI_PHPCS_ARGS=""
+    # The version of phpcs that should be used.
+    - DRUPAL_TI_PHPCS_VERSION="squizlabs/php_codesniffer:^2.9"
+    # The version of drupal/coder that should be used.
+    - DRUPAL_TI_DRUPAL_CODER_VERSION="drupal/coder:^8.2"
+
     # Debug options
     #- DRUPAL_TI_DEBUG="-x -v"
     # Set to "all" to output all files, set to e.g. "xvfb selenium" or "selenium",
