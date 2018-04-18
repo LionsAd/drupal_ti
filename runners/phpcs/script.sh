@@ -6,4 +6,4 @@ set -e $DRUPAL_TI_DEBUG
 
 ARGS=( $DRUPAL_TI_PHPCS_ARGS )
 
-./vendor/bin/phpcs "${ARGS[@]}"
+$HOME/.composer/vendor/bin/phpcs "${ARGS[@]}"
