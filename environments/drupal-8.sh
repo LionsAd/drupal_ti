@@ -10,7 +10,7 @@ function drupal_ti_install_drupal() {
 	# Add extra composer dependencies when required.
 	if [ -n "$COMPOSER_EXTRA_DEPENDENCIES" ]
 	then
-		composer require "$COMPOSER_EXTRA_DEPENDENCIES" --no-interaction
+		composer require $COMPOSER_EXTRA_DEPENDENCIES --no-interaction
 	fi
 
 	php -d sendmail_path=$(which true) ~/.composer/vendor/bin/drush.php --yes -v site-install "$DRUPAL_TI_INSTALL_PROFILE" --db-url="$DRUPAL_TI_DB_URL"
