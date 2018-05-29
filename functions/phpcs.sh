@@ -25,5 +25,8 @@ function drupal_ti_ensure_phpcs() {
         composer global install --no-interaction
     fi
 
+    # Install Drupal and DrupalPractice coding standards.
+    phpcs --config-set installed_paths $HOME/.composer/vendor/drupal/coder/coder_sniffer
+
     touch "$TRAVIS_BUILD_DIR/../drupal_ti-phpcs-installed"
 }
