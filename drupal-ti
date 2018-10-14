@@ -50,6 +50,12 @@ fi
 # Include the environment specific variables.
 export DRUPAL_TI_SCRIPT_DIRS="$DRUPAL_TI_SCRIPT_DIR_BEFORE $DRUPAL_TI_SCRIPT_DIR $DRUPAL_TI_SCRIPT_DIR_AFTER"
 
+# Set necessary envrionment variable for some modules on 5.6 (like REST).
+if [ $(phpenv version-name) == '5.6' ]
+then
+	echo "always_populate_raw_post_data=-1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini;
+fi
+
 # In case a '--' command was given, just include the given command with vars set.
 if [[ "$CMD" == '--'* ]]
 then
