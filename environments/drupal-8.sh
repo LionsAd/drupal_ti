@@ -7,6 +7,12 @@ function drupal_ti_install_drupal() {
 	cd drupal
 	composer install
 
+	# Update PHPUnit for 8.6 or newer.
+	if [ "${DRUPAL_TI_CORE_BRANCH:2:1}" -gt "5" ]
+	then
+	  composer run-script drupal-phpunit-upgrade
+	fi
+
 	# Add extra composer dependencies when required.
 	if [ -n "$COMPOSER_EXTRA_DEPENDENCIES" ]
 	then
