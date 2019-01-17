@@ -81,6 +81,10 @@ function drupal_ti_run_server() {
 
 	# Use hhvm_serve for PHP 5.3 fcgi and hhvm fcgi
 	PHP_VERSION=$(phpenv version-name)
+
+	# Hack: Remove me.
+	PHP_VERSION="hhvm"
+	
 	if [ "$PHP_VERSION" = "5.3" -o "$PHP_VERSION" = "hhvm" ]
 	then
 		export GOPATH="$DRUPAL_TI_DIST_DIR/go"
@@ -182,7 +186,9 @@ function drupal_ti_ensure_php_for_drush_webserver() {
 	PHP_VERSION=$(phpenv version-name)
 	if [ "$PHP_VERSION" != "5.3" -a "$PHP_VERSION" != "hhvm" ]
 	then
-		return
+		# Hack: Remove me.
+		#return
+		echo "Overriding PHP version check" 1>&2
 	fi
 	if [ "$PHP_VERSION" = "hhvm" ]
 	then
