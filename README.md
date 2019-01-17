@@ -123,7 +123,7 @@ drupal_ti_ensure_drupal
 # Change to the Drupal directory
 cd "$DRUPAL_TI_DRUPAL_DIR"
 
-# Create the the module directory (only necessary for D7)
+# Create the module directory (only necessary for D7)
 # For D7, this is sites/default/modules
 # For D8, this is modules
 mkdir -p "$DRUPAL_TI_DRUPAL_DIR/$DRUPAL_TI_MODULES_PATH"
@@ -156,7 +156,7 @@ drupal_ti_ensure_drupal
 # Change to the Drupal directory
 cd "$DRUPAL_TI_DRUPAL_DIR"
 
-# Create the the module directory (only necessary for D7)
+# Create the module directory (only necessary for D7)
 # For D7, this is sites/default/modules
 # For D8, this is modules
 mkdir -p "$DRUPAL_TI_DRUPAL_DIR/$DRUPAL_TI_MODULES_PATH"
