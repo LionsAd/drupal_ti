@@ -23,6 +23,9 @@ matrix:
   allow_failures:
     - php: hhvm
 
+services:
+  - mysql
+
 env:
   global:
     # add composer's global bin directory to the path
