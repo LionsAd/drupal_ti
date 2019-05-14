@@ -58,7 +58,7 @@ export DRUPAL_TI_DIST_DIR="$HOME/.dist"
 export PATH="$DRUPAL_TI_DIST_DIR/usr/bin:$PATH"
 if [ -z "$DRUPAL_TI_CORE_BRANCH" ]
 then
-	export DRUPAL_TI_CORE_BRANCH="8.1.x"
+	export DRUPAL_TI_CORE_BRANCH="8.7.x"
 fi
 
 # The default folder for modules changes in 8.3.x.
