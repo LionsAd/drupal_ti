@@ -5,7 +5,7 @@
 function drupal_ti_install_drupal() {
 	drush --yes dl drupal-7 --drupal-project-rename=drupal
 	cd drupal
-	php -d sendmail_path=$(which true) ~/.composer/vendor/bin/drush.php --yes site-install "$DRUPAL_TI_INSTALL_PROFILE" --db-url="$DRUPAL_TI_DB_URL"
+	php -d sendmail_path=$(which true) ~/.composer/vendor/bin/drush --yes site-install "$DRUPAL_TI_INSTALL_PROFILE" --db-url="$DRUPAL_TI_DB_URL"
 	drush use $(pwd)#default
 }
 
