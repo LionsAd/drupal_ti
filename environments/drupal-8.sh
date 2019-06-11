@@ -7,7 +7,7 @@ function drupal_ti_install_drupal() {
 	cd drupal
 	composer install
 
-	# Update PHPUnit for 8.6 or newer. But below 8.8.x
+	# Update PHPUnit for Drupal from 8.6 to 8.7.
 	if [ "${DRUPAL_TI_CORE_BRANCH:2:1}" -gt "5" ] && [ "${DRUPAL_TI_CORE_BRANCH:2:1}" -lt "8" ]
 	then
 	  composer run-script drupal-phpunit-upgrade
