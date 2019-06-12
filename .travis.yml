@@ -13,7 +13,6 @@ language: php
 sudo: false
 
 php:
-  - 5.3
   - 5.4
   - 5.5
   - 5.6
@@ -34,9 +33,7 @@ matrix:
   allow_failures:
     - php: hhvm
   exclude:
-  # Drupal-8 does not work on PHP 5.3 or PHP 5.4.
-    - php: 5.3
-      env: DRUPAL_TI_RUNNERS="test phpunit phpunit-core simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8" DRUPAL_TI_SAVE_CACHE="0"
+  # Drupal-8 does not work on PHP 5.4.
     - php: 5.4
       env: DRUPAL_TI_RUNNERS="test phpunit phpunit-core simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8" DRUPAL_TI_SAVE_CACHE="0"
   include:
