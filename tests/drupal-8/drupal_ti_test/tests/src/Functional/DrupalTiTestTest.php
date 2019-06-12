@@ -8,7 +8,7 @@
 namespace Drupal\Tests\drupal_ti_test\Functional;
 
 use Drupal\drupal_ti_test\DrupalTiTest;
-use Drupal\simpletest\BrowserTestBase;
+use Drupal\Tests\BrowserTestBase;
 
 /**
  * @coversDefaultClass \Drupal\drupal_ti_test\DrupalTiTest
