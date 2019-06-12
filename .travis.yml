@@ -174,7 +174,7 @@ mysql:
 before_install:
     # Use Drush 9.x on drupal-8
     - |
-    if [ ${DRUPAL_TI_ENVIRONMENT} != "drupal-8" ]; then
+    if [ ${DRUPAL_TI_ENVIRONMENT} = "drupal-8" ]; then
       export DRUPAL_TI_DRUSH_VERSION="drush/drush:~9.0"
     fi
 
