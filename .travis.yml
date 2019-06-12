@@ -35,12 +35,14 @@ matrix:
   allow_failures:
     - php: hhvm
   exclude:
-  # Drupal-8 does not work on PHP 5.4, PHP 5.5 & PHP 5.6.
+  # Drupal-8 does not work on PHP 5.4, PHP 5.5, PHP 5.6 & PHP 7.0.
     - php: 5.4
       env: DRUPAL_TI_RUNNERS="test phpunit phpunit-core simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8" DRUPAL_TI_SAVE_CACHE="0"
     - php: 5.5
       env: DRUPAL_TI_RUNNERS="test phpunit phpunit-core simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8" DRUPAL_TI_SAVE_CACHE="0"
     - php: 5.6
+      env: DRUPAL_TI_RUNNERS="test phpunit phpunit-core simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8" DRUPAL_TI_SAVE_CACHE="0"
+    - php: 7
       env: DRUPAL_TI_RUNNERS="test phpunit phpunit-core simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8" DRUPAL_TI_SAVE_CACHE="0"
   # Drupal-7 does not work on PHP 7.1 & 7.2.
     - php: 7.1
