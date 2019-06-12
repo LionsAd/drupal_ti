@@ -3,7 +3,7 @@
 # Drupal-8 environment variables and functions.
 
 function drupal_ti_install_drupal() {
-	git clone --depth 1 --branch "$DRUPAL_TI_CORE_BRANCH" http://git.drupal.org/project/drupal.git
+	git clone --depth 1 --branch "$DRUPAL_TI_CORE_BRANCH" https://git.drupalcode.org/project/drupal.git
 	cd drupal
 	composer install
 
