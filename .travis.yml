@@ -172,6 +172,12 @@ mysql:
   encoding: utf8
 
 before_install:
+    # Use Drush 9.x on drupal-8
+    - |
+    if [ ${DRUPAL_TI_ENVIRONMENT} != "drupal-8" ]; then
+      export DRUPAL_TI_DRUSH_VERSION="drush/drush:~9.0"
+    fi
+
   # Restore home directory from cache.
   - mkdir -p "$DRUPAL_TI_CACHE_DIR"/HOME
   - if [ "$DRUPAL_TI_LOAD_CACHE" = "1" ]; then rsync -a "$DRUPAL_TI_CACHE_DIR"/HOME/ "$HOME/"; fi
