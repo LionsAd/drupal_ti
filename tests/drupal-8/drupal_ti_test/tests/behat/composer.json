@@ -1,7 +1,6 @@
 {
   "require": {
     "drupal/drupal-extension": "~3.0",
-    "drupal/drupal-driver": "dev-master",
-    "symfony/dom-crawler": "^2.8.50"
+    "drupal/drupal-driver": "~1.2"
   }
 }
