@@ -17,6 +17,8 @@ php:
   - 5.5
   - 5.6
   - 7
+  - 7.1
+  - 7.2
   - hhvm
 
 branches:
@@ -33,8 +35,12 @@ matrix:
   allow_failures:
     - php: hhvm
   exclude:
-  # Drupal-8 does not work on PHP 5.4.
+  # Drupal-8 does not work on PHP 5.4, PHP 5.5 & PHP 5.6.
     - php: 5.4
+      env: DRUPAL_TI_RUNNERS="test phpunit phpunit-core simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8" DRUPAL_TI_SAVE_CACHE="0"
+    - php: 5.5
+      env: DRUPAL_TI_RUNNERS="test phpunit phpunit-core simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8" DRUPAL_TI_SAVE_CACHE="0"
+    - php: 5.6
       env: DRUPAL_TI_RUNNERS="test phpunit phpunit-core simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8" DRUPAL_TI_SAVE_CACHE="0"
   include:
     # Test single runners on PHP 5.4.
@@ -50,7 +56,7 @@ matrix:
     - php: 5.4
       env: DRUPAL_TI_BEHAT_DRIVER="selenium" DRUPAL_TI_BEHAT_BROWSER="chrome" DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7" DRUPAL_TI_SAVE_CACHE="0"
     # Test phpunit-core in isolation.
-    - php: 5.5
+    - php: 7
       env: DRUPAL_TI_RUNNERS="phpunit-core" DRUPAL_TI_ENVIRONMENT="drupal-8" DRUPAL_TI_SAVE_CACHE="0"
     # Test working hhvm tests.
     - php: hhvm
