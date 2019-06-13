@@ -12,6 +12,7 @@
     "symfony/config": "^3.4.28",
     "symfony/console": "^3.4.28",
     "symfony/translation": "^3.4.28",
-    "symfony/yaml": "^3.4.28"
+    "symfony/yaml": "^3.4.28",
+    "symfony/browser-kit": "^4.3"
   }
 }
