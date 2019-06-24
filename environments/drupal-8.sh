@@ -19,7 +19,7 @@ function drupal_ti_install_drupal() {
 		composer require $COMPOSER_EXTRA_DEPENDENCIES --no-interaction
 	fi
 
-	php -d sendmail_path=$(which true) ~/.composer/vendor/bin/drush.php --yes -v site-install "$DRUPAL_TI_INSTALL_PROFILE" --db-url="$DRUPAL_TI_DB_URL"
+	php -d sendmail_path=$(which true) ~/.composer/vendor/bin/drush --yes -v site-install "$DRUPAL_TI_INSTALL_PROFILE" --db-url="$DRUPAL_TI_DB_URL"
 	drush use $(pwd)#default
 }
 
