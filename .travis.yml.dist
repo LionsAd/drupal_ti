@@ -16,6 +16,12 @@ php:
   - 5.5
   - 5.6
   - 7
+  # Drupal 8.5 require at least PHP 7.2
+  # @see https://www.drupal.org/docs/8/system-requirements/php-requirements
+  - 7.2
+  # Drupal 9.0.x require at least PHP 7.3
+  # @see https://www.drupal.org/node/3089166
+  - 7.3
   - hhvm
 
 matrix:
@@ -43,10 +49,11 @@ env:
     #- DRUPAL_TI_SCRIPT_DIR_BEFORE="./drupal_ti/before"
     #- DRUPAL_TI_SCRIPT_DIR_AFTER="./drupal_ti/after"
 
-    # The environment to use, supported are: drupal-7, drupal-8
-    - DRUPAL_TI_ENVIRONMENT="drupal-7"
+    # The environment to use, supported are: drupal-7, drupal-8 & drupal-9
+    - DRUPAL_TI_ENVIRONMENT="drupal-8"
 
     # The drush version to use, by default: drush/drush:8.0.*
+    # Use drush/drush:^10.1.1 at least for Drupal 9.0.x
     # - DRUPAL_TI_DRUSH_VERSION="drush/drush:~9.0"
 
     # The installation profile to use:
@@ -77,6 +84,10 @@ env:
     - DRUPAL_TI_BEHAT_DRIVER="phantomjs"
     - DRUPAL_TI_BEHAT_BROWSER="firefox"
 
+    # Specifying the phpunit version you may want to use.
+    # Drupal 8.6.x will automatically use PHPUnit 6.x.
+    # Drupal 9.0.x should use PHPUnit 7.x.
+    # - DRUPAL_TI_PHPUNIT_VERSION="^7.0"
     # PHPUnit specific commandline arguments.
     - DRUPAL_TI_PHPUNIT_ARGS=""
     # Specifying the phpunit-core src/ directory is useful when e.g. a vendor/

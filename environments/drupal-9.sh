@@ -1,16 +1,20 @@
 #!/bin/bash
 # @file
-# Drupal-8 environment variables and functions.
+# Drupal-9 environment variables and functions.
 
 function drupal_ti_install_drupal() {
 	git clone --depth 1 --branch "$DRUPAL_TI_CORE_BRANCH" https://git.drupalcode.org/project/drupal.git
 	cd drupal
 	composer install
 
-	# Update to PHPUnit 6.x for Drupal from 8.6 to 8.7.
-	if [ "${DRUPAL_TI_CORE_BRANCH:2:1}" -gt "5" ] && [ "${DRUPAL_TI_CORE_BRANCH:2:1}" -lt "8" ]
+	# Installing Drush inside the project vendor directory is mandatory since Drupal 9.
+	# @see https://github.com/drush-ops/drush/issues/4234.
+	composer require --no-interaction "$DRUPAL_TI_DRUSH_VERSION"
+
+	# Update PHPUnit to a specific version when required.
+	if [ -n "$DRUPAL_TI_PHPUNIT_VERSION" ]
 	then
-	  composer run-script drupal-phpunit-upgrade
+		composer require phpunit/phpunit:"$DRUPAL_TI_PHPUNIT_VERSION" --no-interaction --update-with-dependencies
 	fi
 
 	# Add extra composer dependencies when required.
@@ -37,6 +41,7 @@ function drupal_ti_ensure_module_linked() {
 	# This function is re-entrant.
 	if [ -L "$DRUPAL_TI_MODULES_PATH/$DRUPAL_TI_MODULE_NAME" ]
 	then
+		echo "Module is already lined on: '$DRUPAL_TI_MODULES_PATH/$DRUPAL_TI_MODULE_NAME'"
 		return
 	fi
 
@@ -49,25 +54,20 @@ function drupal_ti_ensure_module_linked() {
 
 if [ -z "$DRUPAL_TI_DRUSH_VERSION" ]
 then
-  export DRUPAL_TI_DRUSH_VERSION="drush/drush:8.0.*"
+  export DRUPAL_TI_DRUSH_VERSION="drush/drush:10.0.*"
 fi
 export DRUPAL_TI_SIMPLETEST_FILE="core/scripts/run-tests.sh"
-export DRUPAL_TI_DRUPAL_BASE="$TRAVIS_BUILD_DIR/../drupal-8"
+export DRUPAL_TI_DRUPAL_BASE="$TRAVIS_BUILD_DIR/../drupal-9"
 export DRUPAL_TI_DRUPAL_DIR="$DRUPAL_TI_DRUPAL_BASE/drupal"
 export DRUPAL_TI_DIST_DIR="$HOME/.dist"
 export PATH="$DRUPAL_TI_DIST_DIR/usr/bin:$PATH"
 if [ -z "$DRUPAL_TI_CORE_BRANCH" ]
 then
-	export DRUPAL_TI_CORE_BRANCH="8.7.x"
+	export DRUPAL_TI_CORE_BRANCH="9.0.x"
 fi
 
-# The default folder for modules changes in 8.3.x.
-if [ "${DRUPAL_TI_CORE_BRANCH:2:1}" -gt "2" ]
-then
-  export DRUPAL_TI_MODULES_PATH="modules/contrib"
-else
-  export DRUPAL_TI_MODULES_PATH="modules"
-fi
+# The default folder for modules
+export DRUPAL_TI_MODULES_PATH="modules/contrib"
 
 # Display used for running selenium browser.
 export DISPLAY=:99.0
@@ -78,7 +78,7 @@ export SIMPLETEST_DB="$DRUPAL_TI_DB_URL"
 # export SIMPLETEST_BASE_URL for BrowserTestBase, so it is available for all runners.
 export SIMPLETEST_BASE_URL="$DRUPAL_TI_WEBSERVER_URL:$DRUPAL_TI_WEBSERVER_PORT"
 
-# Use 'minimal' by default for Drupal 8.
+# Use 'minimal' by default for Drupal 9.
 if [ -z "$DRUPAL_TI_INSTALL_PROFILE" ]
 then
 	export DRUPAL_TI_INSTALL_PROFILE="minimal"
