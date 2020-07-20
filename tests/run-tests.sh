@@ -12,7 +12,7 @@ ln -sf "$SCRIPT_DIR/drupal-ti" /tmp/drupal_ti/bin/
 
 # Setup runners.
 export DRUPAL_TI_RUNNERS="success"
-/tmp/drupal_ti/bin/drupal-ti script && echo "- Test succeeed as expected." || exit 1
+/tmp/drupal_ti/bin/drupal-ti script && echo "- Test succeeded as expected." || exit 1
 
 export DRUPAL_TI_RUNNERS="failure"
 /tmp/drupal_ti/bin/drupal-ti script && exit 1 || echo "- Test failed as expected."
