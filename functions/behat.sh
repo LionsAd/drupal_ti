@@ -123,20 +123,22 @@ function drupal_ti_ensure_chrome_driver() {
 		return
 	fi
 
+	drupal_ti_ensure_chrome
 	drupal_ti_ensure_bin_dir
 	cd $DRUPAL_TI_BIN_DIR
 
+	# Get the installed Chrome version number.
+	CHROME_VERSION=$(google-chrome --version | sed -r 's/[^0-9]+([0-9]+\.[0-9]+\.[0-9]+).*/\1/g')
 	# @todo Move to defaults API.
 	if [ -z "$DRUPAL_TI_BEHAT_CHROMEDRIVER_VERSION" ]
 	then
-		DRUPAL_TI_BEHAT_CHROMEDRIVER_VERSION=$(wget http://chromedriver.storage.googleapis.com/LATEST_RELEASE -qO-)
+		DRUPAL_TI_BEHAT_CHROMEDRIVER_VERSION=$(wget https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION -qO-)
 	fi
 
 	wget http://chromedriver.storage.googleapis.com/$DRUPAL_TI_BEHAT_CHROMEDRIVER_VERSION/chromedriver_linux64.zip
 	unzip chromedriver_linux64.zip
 	rm -f chromedriver_linux64.zip
 	chmod a+x chromedriver
-	drupal_ti_ensure_chrome
 
 	touch "$TRAVIS_BUILD_DIR/../drupal_ti-chrome-driver-installed"
 }
