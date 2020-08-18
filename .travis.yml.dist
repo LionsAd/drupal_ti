@@ -76,6 +76,10 @@ env:
     # Set DRUPAL_TI_BEHAT_DRIVER to "selenium" to use "firefox" or "chrome" here.
     - DRUPAL_TI_BEHAT_DRIVER="phantomjs"
     - DRUPAL_TI_BEHAT_BROWSER="firefox"
+    # Pin to a specific version of Chrome if needed.
+    #- DRUPAL_TI_BEHAT_CHROME_URL="http://www.slimjetbrowser.com/chrome/files/80.0.3987.149/google-chrome-stable_current_amd64.deb"
+    # For Chrome versions starting with 73, the correct version of chromedriver will be downloaded automatically, but it can be overridden here for older versions.
+    #- DRUPAL_TI_BEHAT_CHROMEDRIVER_VERSION="80.0.3987.106"
 
     # PHPUnit specific commandline arguments.
     - DRUPAL_TI_PHPUNIT_ARGS=""
