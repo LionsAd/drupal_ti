@@ -13,7 +13,12 @@ function drupal_ti_clear_caches() {
 	drush cc all
 }
 
-export DRUPAL_TI_DRUSH_VERSION="drush/drush:8.0.*"
+# Use drush 8.0.x by default for Drupal 7.
+if [ -z "$DRUPAL_TI_DRUSH_VERSION" ]
+then
+	export DRUPAL_TI_DRUSH_VERSION="drush/drush:8.0.*"
+fi
+
 export DRUPAL_TI_SIMPLETEST_FILE="scripts/run-tests.sh"
 export DRUPAL_TI_MODULES_PATH="sites/all/modules"
 export DRUPAL_TI_DRUPAL_BASE="$TRAVIS_BUILD_DIR/../drupal-7"
