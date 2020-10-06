@@ -13,11 +13,12 @@ language: php
 sudo: false
 
 php:
-  - 5.3
   - 5.4
   - 5.5
   - 5.6
   - 7
+  - 7.1
+  - 7.2
   - hhvm
 
 branches:
@@ -34,11 +35,20 @@ matrix:
   allow_failures:
     - php: hhvm
   exclude:
-  # Drupal-8 does not work on PHP 5.3 or PHP 5.4.
-    - php: 5.3
-      env: DRUPAL_TI_RUNNERS="test phpunit phpunit-core simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8" DRUPAL_TI_SAVE_CACHE="0"
+  # Drupal-8 does not work on PHP 5.4, PHP 5.5, PHP 5.6 & PHP 7.0.
     - php: 5.4
       env: DRUPAL_TI_RUNNERS="test phpunit phpunit-core simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8" DRUPAL_TI_SAVE_CACHE="0"
+    - php: 5.5
+      env: DRUPAL_TI_RUNNERS="test phpunit phpunit-core simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8" DRUPAL_TI_SAVE_CACHE="0"
+    - php: 5.6
+      env: DRUPAL_TI_RUNNERS="test phpunit phpunit-core simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8" DRUPAL_TI_SAVE_CACHE="0"
+    - php: 7
+      env: DRUPAL_TI_RUNNERS="test phpunit phpunit-core simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-8" DRUPAL_TI_SAVE_CACHE="0"
+  # Drupal-7 does not work on PHP 7.1 & 7.2.
+    - php: 7.1
+      env: DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
+    - php: 7.2
+      env: DRUPAL_TI_RUNNERS="test phpunit simpletest behat" DRUPAL_TI_ENVIRONMENT="drupal-7"
   include:
     # Test single runners on PHP 5.4.
     - php: 5.4
@@ -47,13 +57,11 @@ matrix:
       env: DRUPAL_TI_RUNNERS="simpletest" DRUPAL_TI_ENVIRONMENT="drupal-7" DRUPAL_TI_SAVE_CACHE="0"
     - php: 5.4
       env: DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7" DRUPAL_TI_SAVE_CACHE="0"
-    # Test selenium and firefox / chrome browsers.
-    - php: 5.4
-      env: DRUPAL_TI_BEHAT_DRIVER="selenium" DRUPAL_TI_BEHAT_BROWSER="firefox" DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7" DRUPAL_TI_SAVE_CACHE="0"
+    # Test selenium on chrome browsers.
     - php: 5.4
       env: DRUPAL_TI_BEHAT_DRIVER="selenium" DRUPAL_TI_BEHAT_BROWSER="chrome" DRUPAL_TI_RUNNERS="behat" DRUPAL_TI_ENVIRONMENT="drupal-7" DRUPAL_TI_SAVE_CACHE="0"
     # Test phpunit-core in isolation.
-    - php: 5.5
+    - php: 7
       env: DRUPAL_TI_RUNNERS="phpunit-core" DRUPAL_TI_ENVIRONMENT="drupal-8" DRUPAL_TI_SAVE_CACHE="0"
     # Test working hhvm tests.
     - php: hhvm
@@ -116,7 +124,7 @@ env:
     - DRUPAL_TI_BEHAT_SELENIUM_VERSION="2.48.2"
     # Set DRUPAL_TI_BEHAT_DRIVER to "selenium" to use "firefox" or "chrome" here.
     - DRUPAL_TI_BEHAT_DRIVER="phantomjs"
-    - DRUPAL_TI_BEHAT_BROWSER="firefox"
+    - DRUPAL_TI_BEHAT_BROWSER="chrome"
 
     # PHPUnit specific commandline arguments.
     - DRUPAL_TI_PHPUNIT_ARGS=""
@@ -168,6 +176,12 @@ mysql:
   encoding: utf8
 
 before_install:
+    # Use Drush 9.x on drupal-8
+  - |
+    if [ ${DRUPAL_TI_ENVIRONMENT} = "drupal-8" ]; then
+      export DRUPAL_TI_DRUSH_VERSION="drush/drush:~9.0"
+    fi
+
   # Restore home directory from cache.
   - mkdir -p "$DRUPAL_TI_CACHE_DIR"/HOME
   - if [ "$DRUPAL_TI_LOAD_CACHE" = "1" ]; then rsync -a "$DRUPAL_TI_CACHE_DIR"/HOME/ "$HOME/"; fi

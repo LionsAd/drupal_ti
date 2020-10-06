@@ -31,7 +31,7 @@ class DrupalTiTestTest extends KernelTestBase {
     parent::setUp();
 
     // Do something with the database.
-    $this->installSchema('system', 'router');
+    $this->installSchema('system', ['sequences']);
   }
 
   /**
