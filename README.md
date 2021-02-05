@@ -36,6 +36,12 @@ If you want to run drupal_ti with a Drupal-8 module, then you need to use:
 - DRUPAL_TI_ENVIROMENT="drupal-8"
 ```
 
+If you want to run drupal_ti with a Drupal-9 module, then you need to use:
+
+```yml
+- DRUPAL_TI_ENVIROMENT="drupal-9"
+```
+
 ### Using a different tests/ directory.
 
 If your tests/ and composer.json are not in tests/ directory you will want to change:
@@ -52,7 +58,7 @@ drupal\_ti provides a drupal-ti command, which is then called with each stage of
 
 By providing different runners in runners/simpletest or runners/phpunit/ the corresponding scripts are executed (e.g. runners/phpunit/script.sh).
 
-Also diffent environments are included from `environments/$DRUPAL_TI_ENVIRONMENT.sh`, which makes it possible to distinguish easily between Drupal 7 and 8.
+Also diffent environments are included from `environments/$DRUPAL_TI_ENVIRONMENT.sh`, which makes it possible to distinguish easily between Drupal 7, Drupal 8 & Drupal 9.
 
 This gives you a modular Travis experience and as such the scripts can be very generic.
 
