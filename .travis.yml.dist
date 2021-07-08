@@ -43,6 +43,10 @@ env:
     # Configuration variables.
     - DRUPAL_TI_MODULE_NAME="[[[FILL THIS OUT]]]"
     - DRUPAL_TI_SIMPLETEST_GROUP="[[[FILL THIS OUT]]]"
+    # This Composer version of the module is going to be used for testing.
+    # If you don't specify the version here, *@dev is going to be used.
+    # For more information read: https://www.drupal.org/node/2718229
+    #- DRUPAL_TI_MODULE_COMPOSER_VERSION="[[[FILL THIS OUT]]]"
 
     # Define runners and environment vars to include before and after the
     # main runners / environment vars.
